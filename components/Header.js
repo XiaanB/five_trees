@@ -72,6 +72,16 @@ const Header = () => {
               <Text>User Profile</Text>
             </TouchableOpacity>
 
+            <TouchableOpacity
+              onPress={() => {
+                router.push('/(hamburger)/camera');
+                closeModal();
+              }}
+              style={{ padding: 10 }}
+            >
+              <Text>Camera</Text>
+            </TouchableOpacity>
+
             <Button title="Close" onPress={closeModal} />
           </View>
         </View>
