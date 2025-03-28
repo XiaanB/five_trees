@@ -34,13 +34,13 @@ export default function TabLayout() {
           headerShown: false,
         }}
       />
-      <Tabs.Screen
-        name="explore"
+      {/* <Tabs.Screen
+        name="addProduct"
         options={{
-          title: 'Explore',
+          title: 'Add??',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
           headerShown: false,
-        }}
+        }} */}
       />
       <Tabs.Screen
         name="products"
