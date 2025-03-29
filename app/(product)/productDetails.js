@@ -6,20 +6,31 @@ export default function ProductDetails() {
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
-            
-            {/* Product Image */}
-            <Image source={{ uri: product.image }} style={styles.productImage} />
-            
-            {/* Product Description */}
-            {/* Product Details */}
-            <Text style={styles.productName}>{product.name}</Text>
-            <Text style={styles.productDescription}>{product.description}</Text>
-            <Text style={styles.productPrice}>Price: ${product.price}</Text>
-            <Text>Weight: {product.weight}g</Text>
-            <Text>Height: {product.height}cm</Text>
-            <Text>Width: {product.width}cm</Text>
-            <Text>Volume: {product.volume}ml</Text>
-        </ScrollView>
+    {/* Title */}
+    <Text style={styles.title}>Product Details</Text>
+
+    {/* Product Image */}
+    <Image source={{ uri: product.image }} style={styles.productImage} />
+
+    {/* Product Details */}
+    <Text style={styles.productName}>{product.name}</Text>
+
+    <Text style={styles.label}>Description:</Text>
+    <Text style={styles.productDescription}>{product.description}</Text>
+
+    <Text style={styles.label}>Ingredients:</Text>
+    <Text style={styles.productIngredients}>{product.ingredients}</Text>
+
+    <Text style={styles.label}>How It Works:</Text>
+    <Text style={styles.productHowItWorks}>{product.howItWorks}</Text>
+
+    <Text style={styles.productPrice}>Price: ${product.price}</Text>
+    <Text>Weight: {product.weight}g</Text>
+    <Text>Height: {product.height}cm</Text>
+    <Text>Width: {product.width}cm</Text>
+    <Text>Volume: {product.volume}ml</Text>
+</ScrollView>
+
     );
 }
 
@@ -52,6 +63,17 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 10,
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: "bold",
+        marginBottom: 10,
+        textAlign: "center",
+    },
+    label: {
+        fontSize: 16,
+        fontWeight: "bold",
+        marginTop: 10,
     },
 });
 

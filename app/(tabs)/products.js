@@ -122,14 +122,14 @@ const styles = StyleSheet.create({
         margin: 5,
     },
     productImage: {
-        width: 80,
-        height: 80,
+        width: 100,
+        height: 100,
         borderRadius: 5,
         marginRight: 10,
     },
     productImageGrid: {
-        width: 100,
-        height: 100,
+        width: 120,
+        height: 120,
         marginRight: 0,
     },
     productDetails: {

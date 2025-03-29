@@ -14,10 +14,13 @@ const AddProduct = () => {
     weight: "",
     height: "",
     width: "",
-    volume: ""
+    volume: "",
+    length: "",       // New field
+    ingredients: "",  // New field
+    howItWorks: "",   // New field
   });
 
-  // References to input fields for tab navigation
+  // References for tab navigation
   const nameRef = useRef();
   const descRef = useRef();
   const priceRef = useRef();
@@ -25,6 +28,9 @@ const AddProduct = () => {
   const heightRef = useRef();
   const widthRef = useRef();
   const volumeRef = useRef();
+  const lengthRef = useRef();
+  const ingredientsRef = useRef();
+  const howItWorksRef = useRef();
 
   // Handle input changes
   const handleChange = (field, value) => {
@@ -59,7 +65,8 @@ const AddProduct = () => {
         weight: parseFloat(product.weight),
         height: parseFloat(product.height),
         width: parseFloat(product.width),
-        volume: parseFloat(product.volume)
+        volume: parseFloat(product.volume),
+        length: parseFloat(product.length), // Save new field
       });
 
       Alert.alert("Success", "Product added successfully!");
@@ -72,7 +79,10 @@ const AddProduct = () => {
         weight: "",
         height: "",
         width: "",
-        volume: ""
+        volume: "",
+        length: "",      
+        ingredients: "", 
+        howItWorks: "",  
       }); // Reset form after success
     } catch (error) {
       console.error("Error adding product:", error);
@@ -89,7 +99,6 @@ const AddProduct = () => {
         placeholder="SKU"
         value={product.sku}
         autoCapitalize="none"
-        textContentType="none"
         returnKeyType="next"
         onChangeText={(text) => handleChange("sku", text)}
         onSubmitEditing={() => nameRef.current.focus()}
@@ -101,7 +110,6 @@ const AddProduct = () => {
         placeholder="Name"
         value={product.name}
         autoCapitalize="words"
-        textContentType="name"
         returnKeyType="next"
         onChangeText={(text) => handleChange("name", text)}
         onSubmitEditing={() => descRef.current.focus()}
@@ -113,7 +121,6 @@ const AddProduct = () => {
         placeholder="Description"
         value={product.description}
         autoCapitalize="sentences"
-        textContentType="none"
         returnKeyType="next"
         onChangeText={(text) => handleChange("description", text)}
         onSubmitEditing={() => priceRef.current.focus()}
@@ -125,7 +132,6 @@ const AddProduct = () => {
         placeholder="Price"
         value={product.price}
         keyboardType="numeric"
-        textContentType="none"
         returnKeyType="next"
         onChangeText={(text) => handleChange("price", text)}
         onSubmitEditing={() => weightRef.current.focus()}
@@ -170,8 +176,41 @@ const AddProduct = () => {
         placeholder="Volume"
         value={product.volume}
         keyboardType="numeric"
-        returnKeyType="done"
+        returnKeyType="next"
         onChangeText={(text) => handleChange("volume", text)}
+        onSubmitEditing={() => lengthRef.current.focus()}
+      />
+
+      <TextInput
+        ref={lengthRef}
+        style={styles.input}
+        placeholder="Length"
+        value={product.length}
+        keyboardType="numeric"
+        returnKeyType="next"
+        onChangeText={(text) => handleChange("length", text)}
+        onSubmitEditing={() => ingredientsRef.current.focus()}
+      />
+
+      <TextInput
+        ref={ingredientsRef}
+        style={styles.input}
+        placeholder="Ingredients"
+        value={product.ingredients}
+        autoCapitalize="sentences"
+        returnKeyType="next"
+        onChangeText={(text) => handleChange("ingredients", text)}
+        onSubmitEditing={() => howItWorksRef.current.focus()}
+      />
+
+      <TextInput
+        ref={howItWorksRef}
+        style={styles.input}
+        placeholder="How It Works"
+        value={product.howItWorks}
+        autoCapitalize="sentences"
+        returnKeyType="done"
+        onChangeText={(text) => handleChange("howItWorks", text)}
       />
 
       {/* Image Picker */}
