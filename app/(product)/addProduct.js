@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { View, Text, TextInput, Button, Alert, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { ScrollView, View, Text, TextInput, Button, Alert, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig";
@@ -14,30 +14,29 @@ const AddProduct = () => {
     weight: "",
     height: "",
     width: "",
+    length: "",
     volume: "",
-    length: "",       // New field
-    ingredients: "",  // New field
-    howItWorks: "",   // New field
+    ingredients: "",
+    howItWorks: "",
   });
 
-  // References for tab navigation
-  const nameRef = useRef();
-  const descRef = useRef();
-  const priceRef = useRef();
-  const weightRef = useRef();
-  const heightRef = useRef();
-  const widthRef = useRef();
-  const volumeRef = useRef();
-  const lengthRef = useRef();
-  const ingredientsRef = useRef();
-  const howItWorksRef = useRef();
+  const refs = {
+    name: useRef(),
+    description: useRef(),
+    price: useRef(),
+    weight: useRef(),
+    height: useRef(),
+    width: useRef(),
+    alength: useRef(),
+    volume: useRef(),
+    ingredients: useRef(),
+    howItWorks: useRef(),
+  };
 
-  // Handle input changes
   const handleChange = (field, value) => {
     setProduct({ ...product, [field]: value });
   };
 
-  // Function to pick an image
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -51,7 +50,6 @@ const AddProduct = () => {
     }
   };
 
-  // Function to add product to Firestore
   const addProductToFirestore = async () => {
     if (!product.sku || !product.name || !product.price) {
       Alert.alert("Error", "SKU, Name, and Price are required!");
@@ -66,7 +64,7 @@ const AddProduct = () => {
         height: parseFloat(product.height),
         width: parseFloat(product.width),
         volume: parseFloat(product.volume),
-        length: parseFloat(product.length), // Save new field
+        length: parseFloat(product.length),
       });
 
       Alert.alert("Success", "Product added successfully!");
@@ -80,10 +78,10 @@ const AddProduct = () => {
         height: "",
         width: "",
         volume: "",
-        length: "",      
-        ingredients: "", 
-        howItWorks: "",  
-      }); // Reset form after success
+        length: "",
+        ingredients: "",
+        howItWorks: "",
+      });
     } catch (error) {
       console.error("Error adding product:", error);
       Alert.alert("Error", "Failed to add product");
@@ -91,137 +89,152 @@ const AddProduct = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Add New Product</Text>
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
+        <Text style={styles.header}>Add New Product</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="SKU"
-        value={product.sku}
-        autoCapitalize="none"
-        returnKeyType="next"
-        onChangeText={(text) => handleChange("sku", text)}
-        onSubmitEditing={() => nameRef.current.focus()}
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="SKU"
+          value={product.sku}
+          autoCapitalize="none"
+          returnKeyType="next"
+          onChangeText={(text) => handleChange("sku", text)}
+          onSubmitEditing={() => refs.name.current.focus()}
+          blurOnSubmit={false}
+        />
 
-      <TextInput
-        ref={nameRef}
-        style={styles.input}
-        placeholder="Name"
-        value={product.name}
-        autoCapitalize="words"
-        returnKeyType="next"
-        onChangeText={(text) => handleChange("name", text)}
-        onSubmitEditing={() => descRef.current.focus()}
-      />
+        <TextInput
+          ref={refs.name}
+          style={styles.input}
+          placeholder="Name"
+          value={product.name}
+          autoCapitalize="words"
+          returnKeyType="next"
+          autoCorrect={true}
+          onChangeText={(text) => handleChange("name", text)}
+          onSubmitEditing={() => refs.description.current.focus()}
+          blurOnSubmit={false}
+        />
 
-      <TextInput
-        ref={descRef}
-        style={styles.input}
-        placeholder="Description"
-        value={product.description}
-        autoCapitalize="sentences"
-        returnKeyType="next"
-        onChangeText={(text) => handleChange("description", text)}
-        onSubmitEditing={() => priceRef.current.focus()}
-      />
+        <TextInput
+          ref={refs.description}
+          style={styles.input}
+          placeholder="Description"
+          value={product.description}
+          autoCapitalize="sentences"
+          returnKeyType="next"
+          autoCorrect={true}
+          onChangeText={(text) => handleChange("description", text)}
+          onSubmitEditing={() => refs.price.current.focus()}
+          blurOnSubmit={false}
+        />
 
-      <TextInput
-        ref={priceRef}
-        style={styles.input}
-        placeholder="Price"
-        value={product.price}
-        keyboardType="numeric"
-        returnKeyType="next"
-        onChangeText={(text) => handleChange("price", text)}
-        onSubmitEditing={() => weightRef.current.focus()}
-      />
+        <TextInput
+          ref={refs.price}
+          style={styles.input}
+          placeholder="Price"
+          value={product.price}
+          keyboardType="numeric"
+          returnKeyType="next"
+          onChangeText={(text) => handleChange("price", text)}
+          onSubmitEditing={() => refs.weight.current.focus()}
+          blurOnSubmit={false}
+        />
 
-      <TextInput
-        ref={weightRef}
-        style={styles.input}
-        placeholder="Weight"
-        value={product.weight}
-        keyboardType="numeric"
-        returnKeyType="next"
-        onChangeText={(text) => handleChange("weight", text)}
-        onSubmitEditing={() => heightRef.current.focus()}
-      />
+        <TextInput
+          ref={refs.weight}
+          style={styles.input}
+          placeholder="Weight"
+          value={product.weight}
+          keyboardType="numeric"
+          returnKeyType="next"
+          onChangeText={(text) => handleChange("weight", text)}
+          onSubmitEditing={() => refs.height.current.focus()}
+          blurOnSubmit={false}
+        />
 
-      <TextInput
-        ref={heightRef}
-        style={styles.input}
-        placeholder="Height"
-        value={product.height}
-        keyboardType="numeric"
-        returnKeyType="next"
-        onChangeText={(text) => handleChange("height", text)}
-        onSubmitEditing={() => widthRef.current.focus()}
-      />
+        <TextInput
+          ref={refs.height}
+          style={styles.input}
+          placeholder="Height"
+          value={product.height}
+          keyboardType="numeric"
+          returnKeyType="next"
+          onChangeText={(text) => handleChange("height", text)}
+          onSubmitEditing={() => refs.width.current.focus()}
+          blurOnSubmit={false}
+        />
 
-      <TextInput
-        ref={widthRef}
-        style={styles.input}
-        placeholder="Width"
-        value={product.width}
-        keyboardType="numeric"
-        returnKeyType="next"
-        onChangeText={(text) => handleChange("width", text)}
-        onSubmitEditing={() => volumeRef.current.focus()}
-      />
+        <TextInput
+          ref={refs.width}
+          style={styles.input}
+          placeholder="Width"
+          value={product.width}
+          keyboardType="numeric"
+          returnKeyType="next"
+          onChangeText={(text) => handleChange("width", text)}
+          onSubmitEditing={() => refs.volume.current.focus()}
+          blurOnSubmit={false}
+        />
 
-      <TextInput
-        ref={volumeRef}
-        style={styles.input}
-        placeholder="Volume"
-        value={product.volume}
-        keyboardType="numeric"
-        returnKeyType="next"
-        onChangeText={(text) => handleChange("volume", text)}
-        onSubmitEditing={() => lengthRef.current.focus()}
-      />
+        <TextInput
+          ref={refs.volume}
+          style={styles.input}
+          placeholder="Volume"
+          value={product.volume}
+          keyboardType="numeric"
+          returnKeyType="next"
+          onChangeText={(text) => handleChange("volume", text)}
+          onSubmitEditing={() => refs.length.current.focus()}
+          blurOnSubmit={false}
+        />
 
-      <TextInput
-        ref={lengthRef}
-        style={styles.input}
-        placeholder="Length"
-        value={product.length}
-        keyboardType="numeric"
-        returnKeyType="next"
-        onChangeText={(text) => handleChange("length", text)}
-        onSubmitEditing={() => ingredientsRef.current.focus()}
-      />
+        <TextInput
+          ref={refs.length}
+          style={styles.input}
+          placeholder="Length"
+          value={product.length}
+          keyboardType="numeric"
+          returnKeyType="next"
+          onChangeText={(text) => handleChange("length", text)}
+          onSubmitEditing={() => refs.ingredients.current.focus()}
+          blurOnSubmit={false}
+        />
 
-      <TextInput
-        ref={ingredientsRef}
-        style={styles.input}
-        placeholder="Ingredients"
-        value={product.ingredients}
-        autoCapitalize="sentences"
-        returnKeyType="next"
-        onChangeText={(text) => handleChange("ingredients", text)}
-        onSubmitEditing={() => howItWorksRef.current.focus()}
-      />
+        <TextInput
+          ref={refs.ingredients}
+          style={styles.input}
+          placeholder="Ingredients"
+          value={product.ingredients}
+          autoCapitalize="sentences"
+          returnKeyType="next"
+          autoCorrect={true}
+          onChangeText={(text) => handleChange("ingredients", text)}
+          onSubmitEditing={() => refs.howItWorks.current.focus()}
+          blurOnSubmit={false}
+        />
 
-      <TextInput
-        ref={howItWorksRef}
-        style={styles.input}
-        placeholder="How It Works"
-        value={product.howItWorks}
-        autoCapitalize="sentences"
-        returnKeyType="done"
-        onChangeText={(text) => handleChange("howItWorks", text)}
-      />
+        <TextInput
+          ref={refs.howItWorks}
+          style={styles.input}
+          placeholder="How It Works"
+          value={product.howItWorks}
+          autoCapitalize="sentences"
+          returnKeyType="done"
+          autoCorrect={true}
+          onChangeText={(text) => handleChange("howItWorks", text)}
+        />
 
-      {/* Image Picker */}
-      <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
-        <Text style={styles.imagePickerText}>Pick an Image</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
+          <Text style={styles.imagePickerText}>Pick an Image</Text>
+        </TouchableOpacity>
 
-      {product.image ? <Image source={{ uri: product.image }} style={styles.imagePreview} /> : null}
+        {product.image ? <Image source={{ uri: product.image }} style={styles.imagePreview} /> : null}
 
-      <Button title="Add Product" onPress={addProductToFirestore} />
-    </View>
+        <Button title="Add Product" onPress={addProductToFirestore} />
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -229,7 +242,6 @@ export default AddProduct;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 20,
     backgroundColor: "#fff",
   },
