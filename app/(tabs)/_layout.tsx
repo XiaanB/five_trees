@@ -41,6 +41,15 @@ export default function TabLayout() {
           headerShown: false,
         }} */}
       />
+            <Tabs.Screen
+        name="Home1"
+        options={{
+          title: 'Home',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          headerShown: true,
+        }}
+      />
+
       <Tabs.Screen
         name="products"
         options={{
@@ -54,14 +63,6 @@ export default function TabLayout() {
         options={{
           title: 'Education',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="library.fill" color={color} />,
-          headerShown: true,
-        }}
-      />
-      <Tabs.Screen
-        name="Home1"
-        options={{
-          title: 'Home??',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
           headerShown: true,
         }}
       />

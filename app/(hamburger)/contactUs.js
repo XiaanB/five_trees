@@ -1,36 +1,111 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import MapView, { Circle, Marker } from 'react-native-maps';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Linking } from 'react-native';
+import { useRouter } from 'expo-router';
+import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 
-export default function AboutUsScreen() {
-  return (
-    <View style={{ flex: 1 }}>
-      <MapView style={{ flex: 1 }}
-        initialRegion={{
-      
-          latitude: -43.50257416921142,
-          longitude: 172.58669100802567,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-      >
-        <Marker
-          coordinate={{ latitude: -43.50257416921142, longitude: 172.58669100802567 }}
-          title="Five Trees Ltd"
-          description="119 Brookside Terrace, Bryndwr, Christchurch 8053"        
-        /> 
+export default function ContactUsScreen() {
+    const router = useRouter(); // Expo Router Hook
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [message, setMessage] = useState('');
 
-        <Circle
-          center={{ latitude: -43.50257416921142, longitude: 172.58669100802567 }}
-          radius={1000}
-          strokeColor="rgba(255, 0, 0, 0.5)"
-          fillColor="rgba(255, 0, 0, 0.2)"  
-        />
-      </MapView>
-      <Text style={{ position: 'absolute', bottom: 20, left: 20 }}>
-        Contact Us
-      </Text>
-    </View>    
-  );
+    const handleSend = () => {
+        alert(`Thank you, ${name}! We'll get back to you soon.`);
+        setName('');
+        setEmail('');
+        setMessage('');
+    };
+
+    return (
+        <View style={{ flex: 1, backgroundColor: '#f9f9f9', padding: 20 }}>
+            <Text style={{ fontSize: 28, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 }}>
+                📩 Contact Us
+            </Text>
+
+            {/* 📞 Phone & Email Section */}
+            <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginBottom: 20 }}>
+                <TouchableOpacity onPress={() => Linking.openURL('tel:+64212345678')}>
+                    <FontAwesome name="phone" size={30} color="#4CAF50" />
+                    <Text style={{ textAlign: 'center', marginTop: 5 }}>Call Us</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => Linking.openURL('mailto:info@fivetrees.co.nz')}>
+                    <MaterialIcons name="email" size={30} color="#4CAF50" />
+                    <Text style={{ textAlign: 'center', marginTop: 5 }}>Email Us</Text>
+                </TouchableOpacity>
+            </View>
+
+            {/* ✉️ Contact Form */}
+            <TextInput
+                placeholder="Your Name"
+                value={name}
+                onChangeText={setName}
+                style={{
+                    backgroundColor: '#fff',
+                    padding: 15,
+                    borderRadius: 10,
+                    marginBottom: 10,
+                    borderWidth: 1,
+                    borderColor: '#ddd',
+                }}
+            />
+            <TextInput
+                placeholder="Your Email"
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                style={{
+                    backgroundColor: '#fff',
+                    padding: 15,
+                    borderRadius: 10,
+                    marginBottom: 10,
+                    borderWidth: 1,
+                    borderColor: '#ddd',
+                }}
+            />
+            <TextInput
+                placeholder="Your Message"
+                value={message}
+                onChangeText={setMessage}
+                multiline
+                numberOfLines={4}
+                style={{
+                    backgroundColor: '#fff',
+                    padding: 15,
+                    borderRadius: 10,
+                    marginBottom: 10,
+                    borderWidth: 1,
+                    borderColor: '#ddd',
+                    textAlignVertical: 'top',
+                }}
+            />
+
+            {/* 📨 Send Button */}
+            <TouchableOpacity
+                onPress={handleSend}
+                style={{
+                    backgroundColor: '#4CAF50',
+                    padding: 15,
+                    borderRadius: 10,
+                    alignItems: 'center',
+                    marginBottom: 20,
+                }}
+            >
+                <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>Send Message</Text>
+            </TouchableOpacity>
+
+            {/* 🌍 Link to Map Page (Fixed for Expo Router) */}
+            <TouchableOpacity
+                onPress={() => router.push('/(hamburger)/map')} // ✅ Corrected navigation for Expo Router
+                style={{
+                    backgroundColor: '#FF9800',
+                    padding: 15,
+                    borderRadius: 10,
+                    alignItems: 'center',
+                }}
+            >
+                <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>📍 View Our Location</Text>
+            </TouchableOpacity>
+        </View>
+    );
 }
