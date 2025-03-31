@@ -5,6 +5,7 @@ import { useRouter } from 'expo-router';
 
 const Header = () => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [cartItemCount, setCartItemCount] = useState(3); // Example cart count, you can dynamically update this
   const router = useRouter();
 
   const openModal = () => {
@@ -28,11 +29,20 @@ const Header = () => {
 
         {/* Right Section */}
         <View style={styles.rightSection}>
-          <TouchableOpacity onPress={() => router.push('/(hamburger)/userProfile')}> 
+          <TouchableOpacity onPress={() => router.push('/(hamburger)/userProfile')}>
             <Ionicons name="person-circle-outline" size={30} color="black" />
           </TouchableOpacity>
+
+          {/* Cart Icon with Badge */}
           <TouchableOpacity onPress={() => router.push('/(hamburger)/cart')} style={{ marginLeft: 10 }}>
-            <MaterialIcons name="shopping-cart" size={30} color="black" />
+            <View style={styles.cartIconContainer}>
+              <MaterialIcons name="shopping-cart" size={30} color="black" />
+              {cartItemCount > 0 && (
+                <View style={styles.cartItemCount}>
+                  <Text style={styles.cartItemCountText}>{cartItemCount}</Text>
+                </View>
+              )}
+            </View>
           </TouchableOpacity>
         </View>
       </View>
@@ -112,6 +122,25 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     marginLeft: 10,
+  },
+  cartIconContainer: {
+    position: 'relative',
+  },
+  cartItemCount: {
+    position: 'absolute',
+    top: -5,
+    right: -5,
+    backgroundColor: 'red',
+    borderRadius: 10,
+    width: 20,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cartItemCountText: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: 'bold',
   },
 });
 
