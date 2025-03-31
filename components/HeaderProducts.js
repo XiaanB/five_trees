@@ -72,6 +72,16 @@ const Header = () => {
               <Text>Modify Product</Text>
             </TouchableOpacity>
 
+            <TouchableOpacity
+              onPress={() => {
+                router.push('/(product)/PushDemo');
+                closeModal();
+              }}
+              style={{ padding: 10 }}
+            >
+              <Text>Push Notification</Text>
+            </TouchableOpacity>
+
 
             <Button title="Close" onPress={closeModal} />
           </View>

@@ -9,10 +9,8 @@ export default function ProductDetails() {
     {/* Title */}
     <Text style={styles.title}>Product Details</Text>
 
-    {/* Product Image */}
     <Image source={{ uri: product.image }} style={styles.productImage} />
 
-    {/* Product Details */}
     <Text style={styles.productName}>{product.name}</Text>
 
     <Text style={styles.label}>Description:</Text>

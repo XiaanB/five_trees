@@ -17,7 +17,6 @@
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends.",
           "cameraPermission": "The app accesses your camera to let you share them with your friends."
-
         }
       ],
       "expo-router",
@@ -42,10 +41,12 @@
         }
       },
       "permissions": [
-        "CAMERA",
-        "READ_EXTERNAL_STORAGE",
-        "WRITE_EXTERNAL_STORAGE"
-      ]
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.xiaan.five_trees"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
@@ -56,6 +57,14 @@
     "description": "",
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "c03cbec1-4b9c-41a8-b066-34a33098b2d3"
+      }
     }
   }
 }
