@@ -14,11 +14,6 @@ const specials = [
     { id: '3', title: 'Limited Time Discount', image: 'https://example.com/special3.jpg' },
 ];
 
-const socialLinks = [
-    { id: 'facebook', name: 'facebook', url: 'https://facebook.com/fivetreesnz', color: '#1877F2' },
-    { id: 'instagram', name: 'instagram', url: 'https://instagram.com/fivetreesnz', color: '#E4405F' },
-    { id: 'twitter', name: 'twitter', url: 'https://twitter.com/fivetreesnz', color: '#1DA1F2' },
-];
 
 const HomePage = () => {
     const openURL = (url) => {
@@ -86,14 +81,6 @@ const HomePage = () => {
                 )}
             />
 
-            {/* 🌐 Social Media Links */}
-            <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 20 }}>
-                {socialLinks.map((item) => (
-                    <TouchableOpacity key={item.id} onPress={() => openURL(item.url)} style={{ marginHorizontal: 15 }}>
-                        <FontAwesome name={item.name} size={30} color={item.color} />
-                    </TouchableOpacity>
-                ))}
-            </View>
         </View>
     );
 };
