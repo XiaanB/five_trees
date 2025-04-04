@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { View, TouchableOpacity, Image, StyleSheet, Modal, Text, Button } from 'react-native';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { auth } from "../app/firebaseConfig";
+
+const isGuest = auth.currentUser?.isAnonymous;
 
 const Header = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -17,6 +20,12 @@ const Header = () => {
 
   return (
     <View>
+        {isGuest ? (
+              <Text style={{ marginBottom: 20 }}>You are logged in as a guest.</Text>
+        ) : (
+              <Text style={{ marginBottom: 20 }}>Welcome back!</Text>
+        )}
+      
       <View style={styles.header}>
         {/* Left Section */}
         <View style={styles.leftSection}>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "582444083351",
+    "project_id": "fivetrees-26cd0",
+    "storage_bucket": "fivetrees-26cd0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:582444083351:android:95432e6354d906e031e1d2",
+        "android_client_info": {
+          "package_name": "com.xiaan.five_trees"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "582444083351-5m73dbrq7ej2rj4pckp3ct0jnhc43lof.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeddgytFJ9-eVvof2p63L42QiL61VC_wI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "582444083351-5m73dbrq7ej2rj4pckp3ct0jnhc43lof.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

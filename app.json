@@ -5,39 +5,26 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "myapp",  // Define your custom scheme here
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "platforms": ["ios", "android"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false,
+      "bundleIdentifier": "com.xiaan.five_trees",
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "urlSchemes": ["com.xiaan.five_trees"],
+      "config": {
+        "googleSignIn": {
+          "iosUrlScheme": "com.googleusercontent.apps.abc123xyz"
+        }
+      }
     },
-    "plugins": [
-      [
-        "expo-image-picker",
-        {
-          "photosPermission": "The app accesses your photos to let you share them with your friends.",
-          "cameraPermission": "The app accesses your camera to let you share them with your friends."
-        }
-      ],
-      "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
-        }
-      ]
-    ],
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "expo-splash-screen": {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+        "adaptiveIcon": {
+          "foregroundImage": "./assets/adaptive-icon.png",
+          "backgroundColor": "#FFFFFF"
         }
       },
       "permissions": [
@@ -46,7 +33,9 @@
         "android.permission.WRITE_EXTERNAL_STORAGE",
         "android.permission.RECORD_AUDIO"
       ],
-      "package": "com.xiaan.five_trees"
+      "package": "com.xiaan.five_trees",
+      "googleServicesFile": "./google-services.json",
+      "scheme": "myapp"  // Add custom scheme for Android here
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
@@ -65,6 +54,8 @@
       "eas": {
         "projectId": "c03cbec1-4b9c-41a8-b066-34a33098b2d3"
       }
-    }
+    },
+    "owner": "xiaan"
   }
 }
+

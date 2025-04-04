@@ -3,6 +3,8 @@ import { View, Text, Image, FlatList, Dimensions, TouchableOpacity, Linking } fr
 import { MotiView } from 'moti';
 import { FontAwesome } from '@expo/vector-icons';
 import Header from '@/components/Header';
+import { useEffect } from 'react';
+
 
 const { width } = Dimensions.get('window');
 

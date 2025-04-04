@@ -1,8 +1,17 @@
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { useRouter } from 'expo-router';
+import { auth } from "../firebaseConfig";
 
+
+const isGuest = auth.currentUser?.isAnonymous;
 export default function ProductDetails() {
+
+    if (isGuest) {
+        return <Text>Guests cannot purchase items. Please sign in.</Text>;
+    }
+
+
     const product = useLocalSearchParams();
     const router = useRouter();
 
