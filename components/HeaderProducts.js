@@ -23,7 +23,7 @@ const Header = () => {
         {isGuest ? (
               <Text style={{ marginBottom: 20 }}>You are logged in as a guest.</Text>
         ) : (
-              <Text style={{ marginBottom: 20 }}>Welcome back!</Text>
+              <Text style={{ marginBottom: 0 }}>Welcome back!</Text>
         )}
       
       <View style={styles.header}>
