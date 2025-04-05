@@ -49,7 +49,7 @@ export default function RootLayout() {
       setIsGuest(user?.isAnonymous || false);
 
       if (!user) {
-        router.replace("/auth/login"); // Redirect to login if not authenticated
+        router.replace("/(auth)/login"); // Redirect to login if not authenticated
       }
     });
 
@@ -78,7 +78,7 @@ export default function RootLayout() {
             {isGuest ? <Stack.Screen name="guestRestrictedPage" /> : null}
           </>
         ) : (
-          <Stack.Screen name="auth/login" />
+          <Stack.Screen name="(auth)/login" />
         )}
       </Stack>
 
@@ -97,5 +97,5 @@ export default function RootLayout() {
       </View>
     </ThemeProvider>
   </GestureHandlerRootView>
-);
+  );
 }

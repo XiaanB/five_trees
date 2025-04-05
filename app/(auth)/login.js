@@ -16,6 +16,7 @@ const LoginScreen = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const [user, setUser] = useState(null);
     const router = useRouter();
+    const [isAdmin, setIsAdmin] = useState(false); // define state
 
     // Google Auth Session
     const [request, response, promptAsync] = Google.useAuthRequest({
@@ -64,7 +65,12 @@ const LoginScreen = () => {
     const handleGuestLogin = async () => {
         try {
             await signInAnonymously(auth);
-            router.replace("/(tabs)/home");
+            // Simulate login and admin check
+            if (isAdmin) {
+            router.push('/(tabs)/home');  // Admin user goes to home
+            } else {
+            router.push('/(tabs)/home');  // Non-admin user goes to home
+            }
             // console.log("Guest user signed in:", auth.currentUser);
         } catch (error) {
             setErrorMessage("Error signing in as guest");
@@ -79,6 +85,9 @@ const LoginScreen = () => {
 
     return (
         <View style={styles.container}>
+            <Text>Login Screen</Text>
+            <Button title="Log In as Admin" onPress={() => { setIsAdmin(true); handleLogin(); }} />
+            <Button title="Log In as User" onPress={() => { setIsAdmin(false); handleLogin(); }} />
             <Text style={styles.title}>Login</Text>
             {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
             <TextInput placeholder="Email" value={email} onChangeText={setEmail} style={styles.input} />

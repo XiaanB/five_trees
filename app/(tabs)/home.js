@@ -44,7 +44,7 @@ const HomePage = () => {
                     resizeMode="cover"
                 />
                 <Text style={{ color: '#fff', fontSize: 24, fontWeight: 'bold', textAlign: 'center' }}>
-                    Welcome to Five Trees!
+                    Welcome to Five Treesaaaaaaaa!
                 </Text>
             </MotiView>
 

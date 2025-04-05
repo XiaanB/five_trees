@@ -12,7 +12,7 @@ const UserProfileScreen = () => {
   const handleLogout = async () => {
     const result = await logOut();
     if (result.success) {
-      router.replace("/auth/login"); // Redirects to login screen
+      router.replace("/(auth)/login"); // Redirects to login screen
       console.log("Guest signed out:", userCredential.email);
 
     } else {
