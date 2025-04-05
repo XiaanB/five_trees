@@ -40,7 +40,7 @@ const LoginScreen = () => {
             signInWithCredential(auth, credential)
                 .then((userCredential) => {
                     console.log("User signed in:", userCredential.user);
-                    router.replace("/(tabs)/home");
+                    router.replace("/(hamburger)/(tabs)/home");
                 })
                 .catch((error) => {
                     console.error("Authentication error:", error);
@@ -53,8 +53,8 @@ const LoginScreen = () => {
     const handleLogin = async () => {
         try {
             await signInWithEmailAndPassword(auth, email, password);
-              router.replace("/(tabs)/home");
-              // console.log("User signed in:", auth.currentUser.email);
+              router.push("/(tabs)/home");
+            //   console.log("User signed in:", auth.currentUser.email);
         } catch (error) {
             setErrorMessage(error.message);
             console.error("Login Error:", error.message);
@@ -67,9 +67,9 @@ const LoginScreen = () => {
             await signInAnonymously(auth);
             // Simulate login and admin check
             if (isAdmin) {
-            router.push('/(tabs)/home');  // Admin user goes to home
+            router.push('/(tabs)/education');  // Admin user goes to home
             } else {
-            router.push('/(tabs)/home');  // Non-admin user goes to home
+            router.push('(tabs)/education');  // Non-admin user goes to home
             }
             // console.log("Guest user signed in:", auth.currentUser);
         } catch (error) {

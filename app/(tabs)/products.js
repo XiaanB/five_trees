@@ -5,7 +5,7 @@ import {
 import { useRouter } from "expo-router"; 
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../src/firebaseConfig"; 
-import HeaderProducts from '@/components/HeaderProducts';
+import Header from '@/components/HeaderProducts';
 
 
 export default function Products() {
@@ -33,7 +33,7 @@ export default function Products() {
 
     return (
       <View style={styles.container}>
-        <HeaderProducts />
+        <Header/>
             {/* Toggle View Button */}
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => setIsGridView(!isGridView)} style={styles.toggleButton}>

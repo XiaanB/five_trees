@@ -26,7 +26,8 @@ useLayoutEffect(() => {
     return (
         <ScrollView style={{ flex: 1, backgroundColor: '#f9f9f9', padding: 20 }}>
         {/* 🌱 Section 1: Introduction */}
-                <Header />
+            {/* <Header /> */}
+            
         
             <MotiView
                 from={{ opacity: 0, translateY: -20 }}
