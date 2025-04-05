@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button } from "react-native";
 import { useRouter } from "expo-router";
 import { signInWithEmailAndPassword, signInAnonymously, onAuthStateChanged, GoogleAuthProvider, signInWithCredential } from "firebase/auth";
-import { auth } from "../firebaseConfig";
+import { auth } from "../../src/firebaseConfig";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 
 WebBrowser.maybeCompleteAuthSession();
+
+ 
 
 const LoginScreen = () => {
     const [email, setEmail] = useState("");
@@ -50,7 +52,8 @@ const LoginScreen = () => {
     const handleLogin = async () => {
         try {
             await signInWithEmailAndPassword(auth, email, password);
-            router.replace("/(tabs)/home");
+              router.replace("/(tabs)/home");
+              // console.log("User signed in:", auth.currentUser.email);
         } catch (error) {
             setErrorMessage(error.message);
             console.error("Login Error:", error.message);
@@ -62,6 +65,7 @@ const LoginScreen = () => {
         try {
             await signInAnonymously(auth);
             router.replace("/(tabs)/home");
+            // console.log("Guest user signed in:", auth.currentUser);
         } catch (error) {
             setErrorMessage("Error signing in as guest");
             console.error("Anonymous Login Error:", error.message);

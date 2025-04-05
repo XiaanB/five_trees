@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { logOut } from "@/services/auth";
-import { auth } from "../firebaseConfig";
+import { auth } from "../../src/firebaseConfig";
 
 const isGuest = auth.currentUser?.isAnonymous;
 
@@ -13,6 +13,8 @@ const UserProfileScreen = () => {
     const result = await logOut();
     if (result.success) {
       router.replace("/auth/login"); // Redirects to login screen
+      console.log("Guest signed out:", userCredential.email);
+
     } else {
       console.error(result.error);
     }

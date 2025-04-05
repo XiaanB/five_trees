@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
-import { auth } from "../app/firebaseConfig"; // Import Firebase auth
+import { auth } from "../src/firebaseConfig"; // Import Firebase auth
 import { onAuthStateChanged } from "firebase/auth";
 import { View, Text } from "react-native";
 import { Header } from "react-native/Libraries/NewAppScreen";

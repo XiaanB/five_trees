@@ -1,14 +1,47 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Switch } from "react-native";
 import { useRouter } from "expo-router";
 import { signUp } from "../../services/auth";
+import * as ImagePicker from 'expo-image-picker';
+import * as SQLite from 'expo-sqlite';
+import { Platform } from 'react-native';
 
-const SignupScreen = () => {
+
+const signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("customer"); // Default role
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
+  let db = null;
+
+  if (Platform.OS !== 'web') {
+    db = SQLite.openDatabase('userDetails.db');
+  }
+
+  const [form, setForm] = useState({
+    email: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+    address: '',
+    phone: '',
+    subscribed: false,
+    newsletter: false,
+    photo: null,
+  });
+
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setForm({ ...form, photo: result.assets[0].uri });
+    }
+  };
 
   const handleSignup = async () => {
     const result = await signUp(email, password);
@@ -17,9 +50,33 @@ const SignupScreen = () => {
     } else {
       setErrorMessage(result.error);
     }
+    // Store in SQLite
+    if (db) {
+      db.transaction(tx => {
+        tx.executeSql(
+          `CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT, firstName TEXT, lastName TEXT, address TEXT, phone TEXT, subscribed INTEGER, newsletter INTEGER, photo TEXT);`
+        );
+        tx.executeSql(
+          `INSERT INTO user (email, firstName, lastName, address, phone, subscribed, newsletter, photo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+          [
+            form.email,
+            form.firstName,
+            form.lastName,
+            form.address,
+            form.phone,
+            form.subscribed ? 1 : 0,
+            form.newsletter ? 1 : 0,
+            form.photo,
+          ]
+        );
+      });
+
+      alert('User details saved locally!');
+    }
   };
 
-  return (
+
+return (
     <View style={styles.container}>
       <Text style={styles.title}>Sign Up</Text>
       {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
@@ -31,6 +88,28 @@ const SignupScreen = () => {
         <Picker.Item label="Customer" value="customer" />
         <Picker.Item label="Admin" value="admin" />
       </Picker>
+      <TextInput placeholder="Email" onChangeText={email => setForm({ ...form, email })} />
+      <TextInput placeholder="Password" secureTextEntry onChangeText={password => setForm({ ...form, password })} />
+      <TextInput placeholder="First Name" onChangeText={firstName => setForm({ ...form, firstName })} />
+      <TextInput placeholder="Last Name" onChangeText={lastName => setForm({ ...form, lastName })} />
+      <TextInput placeholder="Address" onChangeText={address => setForm({ ...form, address })} />
+      <TextInput placeholder="Phone Number" onChangeText={phone => setForm({ ...form, phone })} keyboardType="phone-pad" />
+      
+      <TouchableOpacity onPress={pickImage}>
+        <Text>Select Profile Photo</Text>
+      </TouchableOpacity>
+      {form.photo && <Image source={{ uri: form.photo }} style={{ width: 100, height: 100 }} />}
+
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
+        <Text>Subscribe</Text>
+        <Switch value={form.subscribed} onValueChange={subscribed => setForm({ ...form, subscribed })} />
+      </View>
+
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Text>Newsletter</Text>
+        <Switch value={form.newsletter} onValueChange={newsletter => setForm({ ...form, newsletter })} />
+      </View>
+
 
       <TouchableOpacity style={styles.button} onPress={handleSignup}>
         <Text style={styles.buttonText}>Sign Up</Text>
@@ -39,7 +118,6 @@ const SignupScreen = () => {
   );
 };
 
-export default SignupScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -85,3 +163,4 @@ const styles = StyleSheet.create({
   },
 });
 
+export default signup;

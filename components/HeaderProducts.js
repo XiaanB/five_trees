@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, TouchableOpacity, Image, StyleSheet, Modal, Text, Button } from 'react-native';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { auth } from "../app/firebaseConfig";
+import { auth } from "../src/firebaseConfig";
 
 const isGuest = auth.currentUser?.isAnonymous;
 

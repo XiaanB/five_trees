@@ -1,7 +1,7 @@
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { useRouter } from 'expo-router';
-import { auth } from "../firebaseConfig";
+import { auth } from "../../src/firebaseConfig";
 
 
 const isGuest = auth.currentUser?.isAnonymous;

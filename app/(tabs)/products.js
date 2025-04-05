@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import { useRouter } from "expo-router"; 
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "../firebaseConfig"; 
+import { db } from "../../src/firebaseConfig"; 
 import HeaderProducts from '@/components/HeaderProducts';
 
 

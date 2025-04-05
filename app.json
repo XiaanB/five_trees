@@ -5,15 +5,20 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",  // Define your custom scheme here
+    "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.xiaan.five_trees",
       "googleServicesFile": "./GoogleService-Info.plist",
-      "urlSchemes": ["com.xiaan.five_trees"],
+      "urlSchemes": [
+        "com.xiaan.five_trees"
+      ],
       "config": {
         "googleSignIn": {
           "iosUrlScheme": "com.googleusercontent.apps.abc123xyz"
@@ -35,7 +40,7 @@
       ],
       "package": "com.xiaan.five_trees",
       "googleServicesFile": "./google-services.json",
-      "scheme": "myapp"  // Add custom scheme for Android here
+      "scheme": "myapp"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
@@ -55,7 +60,9 @@
         "projectId": "c03cbec1-4b9c-41a8-b066-34a33098b2d3"
       }
     },
-    "owner": "xiaan"
+    "owner": "xiaan",
+    "plugins": [
+      "expo-sqlite"
+    ]
   }
 }
-

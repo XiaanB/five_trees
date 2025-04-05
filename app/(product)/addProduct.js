@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { ScrollView, View, Text, TextInput, Button, Alert, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { collection, addDoc } from "firebase/firestore";
-import { db } from "../firebaseConfig";
+import { db } from "../../src/firebaseConfig";
 
 const AddProduct = () => {
   const [product, setProduct] = useState({

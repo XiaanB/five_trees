@@ -1,5 +1,5 @@
 // services/auth.js
-import { auth } from "../app/firebaseConfig"; 
+import { auth } from "../src/firebaseConfig";
 import { collection, addDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
