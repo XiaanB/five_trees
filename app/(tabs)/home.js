@@ -4,6 +4,8 @@ import { MotiView } from 'moti';
 import { FontAwesome } from '@expo/vector-icons';
 import Header from '@/components/Header';
 import { useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { useLayoutEffect } from 'react';
 
 
 const { width } = Dimensions.get('window');
@@ -19,6 +21,20 @@ const HomePage = () => {
     const openURL = (url) => {
         Linking.openURL(url).catch(err => console.error("Couldn't open URL", err));
     };
+    const navigation = useNavigation();
+
+useLayoutEffect(() => {
+    navigation.setOptions({
+        headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.openDrawer()} style={{ marginLeft: 15 }}>
+                <FontAwesome name="bars" size={24} color="black" />
+            </TouchableOpacity>
+        ),
+        headerTitle: 'Home',
+        headerShown: true,
+    });
+}, [navigation]);
+
 
     return (
         <View style={{ flex: 1, backgroundColor: '#f9f9f9' }}>

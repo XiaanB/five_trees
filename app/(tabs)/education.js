@@ -1,10 +1,28 @@
 import React from 'react';
-import { View, Text, ScrollView, Image } from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { MotiView } from 'moti';
 import Header from '@/components/Header';
+import { useNavigation } from '@react-navigation/native';
+import { useLayoutEffect } from 'react';
+import { FontAwesome } from '@expo/vector-icons';
+
 
 
 const Educational = () => {
+    const navigation = useNavigation();
+
+useLayoutEffect(() => {
+    navigation.setOptions({
+        headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.openDrawer()} style={{ marginLeft: 15 }}>
+                <FontAwesome name="bars" size={24} color="black" />
+            </TouchableOpacity>
+        ),
+        headerTitle: 'Home',
+        headerShown: true,
+    });
+}, [navigation]);
+
     return (
         <ScrollView style={{ flex: 1, backgroundColor: '#f9f9f9', padding: 20 }}>
         {/* 🌱 Section 1: Introduction */}
