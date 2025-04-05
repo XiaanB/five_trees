@@ -40,7 +40,7 @@ const LoginScreen = () => {
             signInWithCredential(auth, credential)
                 .then((userCredential) => {
                     console.log("User signed in:", userCredential.user);
-                    router.replace("/(hamburger)/(tabs)/home");
+                    router.replace("/(tabs)/home");
                 })
                 .catch((error) => {
                     console.error("Authentication error:", error);
@@ -53,7 +53,7 @@ const LoginScreen = () => {
     const handleLogin = async () => {
         try {
             await signInWithEmailAndPassword(auth, email, password);
-              router.push("/(tabs)/home");
+              router.replace("/(tabs)/home");
             //   console.log("User signed in:", auth.currentUser.email);
         } catch (error) {
             setErrorMessage(error.message);
@@ -67,9 +67,9 @@ const LoginScreen = () => {
             await signInAnonymously(auth);
             // Simulate login and admin check
             if (isAdmin) {
-            router.push('/(tabs)/education');  // Admin user goes to home
+            router.push('/(tabs)/home');  // Admin user goes to home
             } else {
-            router.push('(tabs)/education');  // Non-admin user goes to home
+            router.push('(tabs)/home');  // Non-admin user goes to home
             }
             // console.log("Guest user signed in:", auth.currentUser);
         } catch (error) {
@@ -87,7 +87,7 @@ const LoginScreen = () => {
         <View style={styles.container}>
             <Text>Login Screen</Text>
             <Button title="Log In as Admin" onPress={() => { setIsAdmin(true); handleLogin(); }} />
-            <Button title="Log In as User" onPress={() => { setIsAdmin(false); handleLogin(); }} />
+            {/* <Button title="Log In as User" onPress={() => { setIsAdmin(false); handleLogin(); }} /> */}
             <Text style={styles.title}>Login</Text>
             {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
             <TextInput placeholder="Email" value={email} onChangeText={setEmail} style={styles.input} />
@@ -115,7 +115,7 @@ const LoginScreen = () => {
             <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                 {user ? (
                     <>
-                        <Text>Welcome, {user.displayName || "User"}</Text>
+                        <Text>Welcome , {user.displayName || "User"}</Text>
                         <Button title="Logout" onPress={() => auth.signOut()} />
                     </>
                 ) : (

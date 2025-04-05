@@ -1,69 +1,45 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
+import { Tabs } from "expo-router/tabs";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "expo-router";
+import { TouchableOpacity } from "react-native";
+import { DrawerActions } from '@react-navigation/native'; // Import DrawerActions
+import { Stack } from "expo-router";
 
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+export default function TabsLayout() {
+  const navigation = useNavigation(); // Get access to navigation
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
+        headerLeft: () => (
+          <TouchableOpacity
+            onPress={() => navigation.dispatch(DrawerActions.openDrawer())} // Use DrawerActions to open drawer
+            style={{ marginLeft: 15 }}
+          >
+            <Ionicons name="menu" size={28} color="black" />
+          </TouchableOpacity>
+        ),
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-          headerShown: false,
+          title: "Home",
+          tabBarIcon: ({ color, size }) => <Ionicons name="home" color={color} size={size} />,
         }}
       />
-      {/* <Tabs.Screen
-        name="addProduct"
-        options={{
-          title: 'Add??',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-          headerShown: false,
-        }} */}
-      {/* /> */}
-      {/* <Tabs.Screen
-        name="Home1"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-          headerShown: true,
-        }}
-      /> */}
-
       <Tabs.Screen
         name="products"
         options={{
-          title: 'Products',
-          tabBarIcon: ({ color }) => <FontAwesome name="shopping-basket" size={28} color={color} />,
-          headerShown: true,
+          title: "Products",
+          tabBarIcon: ({ color, size }) => <Ionicons name="cart" color={color} size={size} />,
         }}
       />
-       <Tabs.Screen
+      <Tabs.Screen
         name="education"
         options={{
-          title: 'Education',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="library.fill" color={color} />,
-          headerShown: true,
+          title: "Education",
+          tabBarIcon: ({ color, size }) => <Ionicons name="book" color={color} size={size} />,
         }}
       />
     </Tabs>

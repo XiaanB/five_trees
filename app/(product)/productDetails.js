@@ -7,12 +7,13 @@ import { auth } from "../../src/firebaseConfig";
 const isGuest = auth.currentUser?.isAnonymous;
 export default function ProductDetails() {
 
-    if (isGuest) {
-        return <Text>Guests cannot purchase items. Please sign in.</Text>;
-    }
+    // if (isGuest) {
+    //     return <Text>Guests cannot purchase items. Please sign in.</Text>;
+    // }
 
 
-    const product = useLocalSearchParams();
+    const  product  = useLocalSearchParams();
+    console.log(product);
     const router = useRouter();
 
     const handleAddToCart = () => {

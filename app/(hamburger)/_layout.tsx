@@ -1,48 +1,39 @@
-// // app/(hamburger)/_layout.tsx
-// import React from 'react';
-// import { createDrawerNavigator } from '@react-navigation/drawer';
-// import { View, Text } from 'react-native';
-// import AboutScreen from './aboutUs';        
-// import CameraScreen from './camera';      // Import your Camera screen (JS)
-// import CartScreen from './cart';          // Import your Cart screen (JS)
-// import CheckoutScreen from './checkout';  // Import your Checkout screen (JS)
-// import ContactScreen from './contactUs';    // Import your Contact screen (JS)
-// import MapScreen from './map';            // Import your Map screen (JS)
-// import UserProfileScreen from './userProfile'; // Import your UserProfile screen (JS)
-// import AddProductScreen from './addProduct'; // Admin only
-// import DeleteProductScreen from './deleteProduct'; // Admin only
-// import ModifyProductScreen from './modifyProduct'; // Admin only
-// import ProductDetailsScreen from './productDetails'; // Admin only
-// import PushDemoScreen from './pushDemo'; // Admin only
-// import PushEmailScreen from './pushEmail'; // Admin only
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
+import { View, Text, Button } from "react-native";
+import { useRouter } from "expo-router";
+import { auth } from "../../src/firebaseConfig";
+import { signOut } from "firebase/auth";
 
-// const Drawer = createDrawerNavigator();
+// Import screens
+import AboutScreen from "../(hamburger)/aboutUs";
+import ContactScreen from "../(hamburger)/contactUs";
 
-// export default function DrawerLayout() {
-//   // Replace with real authentication logic or context for isAdmin
-//   const isAdmin = true;  // You should get this from the user context or state
+const Drawer = createDrawerNavigator();
 
-//   return (
-//     <Drawer.Navigator>
-//       <Drawer.Screen name="About" component={AboutScreen} />
-//       <Drawer.Screen name="Camera" component={CameraScreen} />
-//       <Drawer.Screen name="Cart" component={CartScreen} />
-//       <Drawer.Screen name="Checkout" component={CheckoutScreen} />
-//       <Drawer.Screen name="Contact" component={ContactScreen} />
-//       <Drawer.Screen name="Map" component={MapScreen} />
-//       <Drawer.Screen name="User Profile" component={UserProfileScreen} />
+// Custom Drawer Content
+function CustomDrawerContent(props) {
+  const router = useRouter();
 
-//       {/* Conditionally render admin screens */}
-//       {isAdmin && (
-//         <>
-//           <Drawer.Screen name="Add Product" component={AddProductScreen} />
-//           <Drawer.Screen name="Delete Product" component={DeleteProductScreen} />
-//           <Drawer.Screen name="Modify Product" component={ModifyProductScreen} />
-//           <Drawer.Screen name="Product Details" component={ProductDetailsScreen} />
-//           <Drawer.Screen name="Push Demo" component={PushDemoScreen} />
-//           <Drawer.Screen name="Push Email" component={PushEmailScreen} />
-//         </>
-//       )}
-//     </Drawer.Navigator>
-//   );
-// }
+  const handleSignOut = async () => {
+    await signOut(auth);
+    router.replace("/(auth)/"); // Redirect to sign-in after logout
+  };
+console.log("Drawer is rendering!"); // Debugging log
+  return (
+    <DrawerContentScrollView {...props}>
+      <DrawerItem label="About" onPress={() => props.navigation.navigate("about")} />
+      <DrawerItem label="Contact" onPress={() => props.navigation.navigate("contact")} />
+      <DrawerItem label="Sign Out" onPress={handleSignOut} />
+    </DrawerContentScrollView>
+  );
+}
+
+export default function DrawerLayout() {
+  return (
+    <Drawer.Navigator drawerContent={(props) => <CustomDrawerContent {...props} />}>
+      <Drawer.Screen name="about" component={AboutScreen} />
+      <Drawer.Screen name="contact" component={ContactScreen} />
+    </Drawer.Navigator>
+  );
+}

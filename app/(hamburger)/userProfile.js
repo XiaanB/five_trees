@@ -3,24 +3,23 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { logOut } from "@/services/auth";
 import { auth } from "../../src/firebaseConfig";
-
-const isGuest = auth.currentUser?.isAnonymous;
+import { useNavigation } from '@react-navigation/native';
 
 const UserProfileScreen = () => {
-  const router = useRouter();
+  // const router = useRouter();
+  const isGuest = auth.currentUser?.isAnonymous;
+  const navigation = useNavigation();
 
   const handleLogout = async () => {
+    console.log("Attempting to log out...");
     const result = await logOut();
     if (result.success) {
-      router.replace("/(auth)/login"); // Redirects to login screen
-      console.log("Guest signed out:", userCredential.email);
-
+      console.log("Logged out successfully");
+      navigation.push("Login"); 
     } else {
-      console.error(result.error);
+      console.error("Logout failed", result.error);
     }
-};
-
-
+  };
 
   return (
     <View style={styles.container}>
