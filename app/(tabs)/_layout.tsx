@@ -4,11 +4,17 @@ import { useNavigation } from "expo-router";
 import { TouchableOpacity } from "react-native";
 import { DrawerActions } from '@react-navigation/native'; // Import DrawerActions
 import { Stack } from "expo-router";
+import { IconSymbol } from '@/components/ui/IconSymbol';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { Colors } from '@/constants/Colors';
+import { useColorScheme } from '@/hooks/useColorScheme';
 
 export default function TabsLayout() {
   const navigation = useNavigation(); // Get access to navigation
+  const colorScheme = useColorScheme();
 
   return (
+    
     <Tabs
       screenOptions={{
         headerLeft: () => (
@@ -25,7 +31,7 @@ export default function TabsLayout() {
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: ({ color, size }) => <Ionicons name="home" color={color} size={size} />,
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
         }}
       />
       <Tabs.Screen
