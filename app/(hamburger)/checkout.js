@@ -114,7 +114,7 @@ export default function Checkout() {
       >
         
         <Text style={styles.proceedText}>
-          {isLoading ? 'Processing...' : 'Proceed to Checkout'}
+          {isLoading ? 'Processing...' : 'Proceed to Payment'}
         </Text>
       </TouchableOpacity>
     </ScrollView>

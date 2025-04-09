@@ -4,7 +4,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const useCartStore = create((set) => ({
     cart: [], // Default empty cart
-    
     addToCart: async (product) => {
         set((state) => {
             const updatedCart = [...state.cart, product];

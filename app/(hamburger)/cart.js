@@ -1,17 +1,17 @@
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; // Importing useNavigation hook
-import { useCartStore } from '../../src/store/cartStore'; // Importing cart storeimport { useCartStore } from '../../src/store/cartStore'; // or wherever your cart logic lives
+import { useNavigation } from '@react-navigation/native'; 
+import { useCartStore } from '../../src/store/cartStore'; 
 
 export default function CartPage() {
     const navigation = useNavigation();
     const cartItems = useCartStore((state) => state.cart);
     const removeFromCart = useCartStore((state) => state.removeFromCart);
+    const updateQuantity = useCartStore((state) => state.updateQuantity); // Assuming you have a function to update quantity in the store
 
-    const total = cartItems.reduce((sum, item) => sum + parseFloat(item.price), 0).toFixed(2);
+    const total = cartItems.reduce((sum, item) => sum + parseFloat(item.price) * item.quantity, 0).toFixed(2);
 
     const handleCheckout = () => {
-      // Handle checkout logic here
-      console.log('Proceeding to checkout...');
+        console.log('Proceeding to checkout...');
         navigation.navigate('checkOut');
     };
 
@@ -28,6 +28,25 @@ export default function CartPage() {
                         <View style={styles.itemDetails}>
                             <Text style={styles.itemName}>{item.name}</Text>
                             <Text style={styles.itemPrice}>${item.price}</Text>
+
+                            {/* Quantity controls */}
+                            <View style={styles.quantityContainer}>
+                                <TouchableOpacity 
+                                    onPress={() => updateQuantity(item.id, item.quantity - 1)} 
+                                    style={styles.quantityButton}
+                                    disabled={item.quantity <= 1} // Disable if quantity is 1
+                                >
+                                    <Text style={styles.quantityButtonText}>-</Text>
+                                </TouchableOpacity>
+                                <Text style={styles.quantityText}>{item.quantity}</Text>
+                                <TouchableOpacity 
+                                    onPress={() => updateQuantity(item.id, item.quantity + 1)} 
+                                    style={styles.quantityButton}
+                                >
+                                    <Text style={styles.quantityButtonText}>+</Text>
+                                </TouchableOpacity>
+                            </View>
+
                             <TouchableOpacity onPress={() => removeFromCart(item.id)}>
                                 <Text style={styles.removeText}>Remove</Text>
                             </TouchableOpacity>
@@ -41,8 +60,7 @@ export default function CartPage() {
                     <Text style={styles.total}>Total: ${total}</Text>
                     <TouchableOpacity style={styles.checkoutButton} onPress={handleCheckout}>
                         <Text style={styles.checkoutText}>Proceed to Checkout</Text>
-            </TouchableOpacity>
-            
+                    </TouchableOpacity>
                 </>
             )}
         </ScrollView>
@@ -113,5 +131,25 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 18,
         fontWeight: 'bold',
+    },
+    quantityContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 10,
+    },
+    quantityButton: {
+        backgroundColor: '#ddd',
+        padding: 10,
+        borderRadius: 5,
+        marginHorizontal: 5,
+    },
+    quantityButtonText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+    quantityText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginHorizontal: 10,
     },
 });
