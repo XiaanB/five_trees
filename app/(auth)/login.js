@@ -11,8 +11,10 @@ import {
 import { auth } from "../../src/firebaseConfig";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
+import { makeRedirectUri } from "expo-auth-session";
 
 WebBrowser.maybeCompleteAuthSession();
+const redirectUri = makeRedirectUri({ useProxy: true });
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -27,7 +29,27 @@ const LoginScreen = () => {
     iosClientId: "582444083351-o690ln6gvvh14sh9m8e5oqe759r2hi1g.apps.googleusercontent.com",
     androidClientId: "582444083351-ccgacqi7168d8efp1ri6hmtl5q1mp9kg.apps.googleusercontent.com",
     webClientId: "582444083351-18bib0ib1suegl75vkgc7p95sl1ac8e4.apps.googleusercontent.com",
+    redirectUri, 
   });
+
+
+    // Handle Google Sign-In response
+  useEffect(() => {
+    if (response?.type === "success") {
+      const { id_token } = response.params; // Get the id_token from Google
+      const credential = GoogleAuthProvider.credential(id_token); // Create Firebase credential
+
+      signInWithCredential(auth, credential) // Sign in with the credential
+        .then(() => {
+          Alert.alert("Success", "You are signed in with Google!");
+          router.replace("/(tabs)"); // Redirect to the home page
+        })
+        .catch((error) => {
+          console.error("Google Sign-In Error:", error);
+          Alert.alert("Error", "Google Sign-In failed!");
+        });
+    }
+  }, [response]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -73,8 +95,9 @@ const LoginScreen = () => {
   };
 
   const handleGoogleSignIn = async () => {
-    promptAsync();
+    promptAsync({ useProxy: true });
   };
+  
 
   return (
     <View style={styles.container}>
@@ -138,8 +161,18 @@ const LoginScreen = () => {
           <Button title="Logout" onPress={() => auth.signOut()} />
         </View>
       )}
+      
     </View>
   );
+  
+};
+
+export const unstable_settings = {
+  initialRouteName: 'login',
+};
+
+export const screenOptions = {
+  headerShown: false,
 };
 
 const styles = StyleSheet.create({

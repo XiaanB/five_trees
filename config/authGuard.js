@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { auth } from "./firebaseConfig";
+import { auth } from "../credentials/android/firebaseConfig";
 import { useRouter, useSegments } from "expo-router";
 
 export function useAuthGuard() {

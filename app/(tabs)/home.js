@@ -38,6 +38,7 @@ useLayoutEffect(() => {
 
     return (
         <View style={{ flex: 1, backgroundColor: '#f9f9f9' }}>
+                  <Header/>
 
             {/* 🏠 Animated Banner Section */}
             <MotiView

@@ -21,10 +21,10 @@ const Header = () => {
       <View style={styles.header}>
         {/* Left Section */}
         <View style={styles.leftSection}>
-          <TouchableOpacity onPress={openModal}>
-            <MaterialIcons name="menu" size={30} color="black" />
+          <TouchableOpacity onPress={() => router.push('/home')}>
+            <Image source={require('../assets/images/fiveTreesIcon.png')} style={styles.fiveTreesIcon} />
+            <Text style={{ marginLeft: 10, fontSize: 10 }}>Home</Text>
           </TouchableOpacity>
-          <Image source={require('../assets/images/fiveTreesIcon.png')} style={styles.fiveTreesIcon} />
         </View>
 
         {/* Right Section */}

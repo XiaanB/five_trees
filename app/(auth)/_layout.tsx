@@ -1,7 +1,8 @@
 // app/(auth)/_layout.tsx
 import React, { useState, useEffect } from 'react';
-import { Slot, Link, useRouter } from 'expo-router';
-import { Text, View } from 'react-native';
+import { Slot, useRouter } from 'expo-router';
+import { View } from 'react-native';
+import { Stack } from 'expo-router';
 
 export default function AuthLayout() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -16,21 +17,17 @@ export default function AuthLayout() {
   // If logged in, redirect to the main app
   useEffect(() => {
     if (isAuthenticated) {
-      router.replace('/(tabs)/home');
+      router.replace('/(tabs)/home'); // Redirect after authentication
     }
   }, [isAuthenticated]);
 
   return (
     <View style={{ flex: 1 }}>
-      {/* Optional static message */}
-      <View style={{ padding: 20 }}>
-        <Text>Please Log In</Text>
-        <Link href="/(auth)/login">Go to Login</Link>
-      </View>
-
-      {/* 🔥 This renders the login.js screen or any other screen inside (auth) */}
-      <Slot />
+      {/* This will hide the header for all screens in this layout */}
+      <Stack screenOptions={{ headerShown: false }}>
+        {/* Renders the login screen or any other screen inside (auth) */}
+        <Slot />
+      </Stack>
     </View>
   );
 }
-

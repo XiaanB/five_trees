@@ -27,7 +27,7 @@ export default function Cart() {
 
   const handleCheckout = () => {
     console.log('Proceeding to checkout...');
-    router.push('/checkout');
+    router.push('/(hamburger)/checkout');
   };
 
   const handleRemoveItem = (itemId) => {

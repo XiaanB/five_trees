@@ -1,7 +1,7 @@
 import { Drawer } from "expo-router/drawer";
 import { View, Text,TouchableOpacity, StyleSheet } from "react-native";
 import { globalStyles } from "./styles"; // Import styles
-import { Stack,useRouter } from "expo-router";
+import { Stack,useRouter, useSegments } from "expo-router";
 import Header  from "../components/Header"; // Import Header component
 import { MotiView } from 'moti';
 // ✅ Use this:
@@ -73,19 +73,13 @@ export default function Layout() {
   return (
     
     <View style={{ flex: 1 }}>
-      <Header/>
-      <View style={{ backgroundColor: "#6200ea", padding: 20 }}>
-        <Text style={{ color: "white", fontSize: 20, textAlign: "center" }}>
-          My App Header
-        </Text>
-      </View>
 
       {/* MAIN CONTENT - Drawer Navigation */}
       <View style={{ flex: 1 }}>
         <Drawer>
           <Drawer.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Drawer.Screen name="(drawer)/about" options={{ title: "About Us" }} />
-          <Drawer.Screen name="(drawer)/contact" options={{ title: "Contact Us" }} />
+          {/* <Drawer.Screen name="(hamburger)/aboutUs" options={{ title: "About Us" }} />
+          <Drawer.Screen name="(hamburger)/contactUs" options={{ title: "Contact Us" }} /> */}
         </Drawer>
       </View>
 
