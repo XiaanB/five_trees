@@ -3,11 +3,15 @@ import { View, TouchableOpacity, Image, StyleSheet, Modal, Text, Button } from '
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { auth } from "../src/firebaseConfig";
+import { useCartStore } from '../src/store/cartStore'; // Adjust the path to your store
+
 
 const isGuest = auth.currentUser?.isAnonymous;
 
 const Header = () => {
   const [modalVisible, setModalVisible] = useState(false);
+    const [cartItemCount, setCartItemCount] = useState(3); // Example cart count, you can dynamically update this
+
   const router = useRouter();
 
   const openModal = () => {
@@ -41,8 +45,20 @@ const Header = () => {
           <TouchableOpacity onPress={() => router.push('/(hamburger)/userProfile')}> 
             <Ionicons name="person-circle-outline" size={30} color="black" />
           </TouchableOpacity>
+          <TouchableOpacity onPress={() => router.push('/(hamburger)/userProfile')}>
+            <Ionicons name="person-circle-outline" size={30} color="black" />
+          </TouchableOpacity>
+
+          {/* Cart Icon with Badge */}
           <TouchableOpacity onPress={() => router.push('/(hamburger)/cart')} style={{ marginLeft: 10 }}>
-            <MaterialIcons name="shopping-cart" size={30} color="black" />
+            <View style={styles.cartIconContainer}>
+              <MaterialIcons name="shopping-cart" size={30} color="black" />
+              {cartItemCount > 0 && (
+                <View style={styles.cartItemCount}>
+                  <Text style={styles.cartItemCountText}>{cartItemCount}</Text>
+                </View>
+              )}
+            </View>
           </TouchableOpacity>
         </View>
       </View>

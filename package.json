@@ -16,15 +16,17 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.4",
+    "@react-native-async-storage/async-storage": "^1.24.0",
     "@react-navigation/bottom-tabs": "^7.3.9",
     "@react-navigation/drawer": "^7.3.8",
     "@react-navigation/native": "^7.1.5",
     "@react-navigation/stack": "^7.2.9",
-    "@stripe/stripe-react-native": "0.38.6",
+    "@stripe/stripe-react-native": "^0.38.6",
     "@trycourier/courier": "^6.4.0",
     "expo": "~52.0.42",
     "expo-application": "~6.0.2",
     "expo-auth-session": "~6.0.3",
+    "expo-av": "~15.0.2",
     "expo-blur": "~14.0.3",
     "expo-camera": "~16.0.18",
     "expo-constants": "~17.0.8",
@@ -45,6 +47,7 @@
     "expo-system-ui": "~4.0.9",
     "expo-web-browser": "~14.0.2",
     "firebase": "^11.5.0",
+    "lottie-react-native": "7.1.0",
     "moti": "^0.30.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
@@ -58,8 +61,7 @@
     "react-native-web": "~0.19.13",
     "react-native-webview": "13.12.5",
     "react-router-dom": "^7.5.0",
-    "lottie-react-native": "7.1.0",
-    "expo-av": "~15.0.2"
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

@@ -2,22 +2,21 @@ import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'rea
 import { useLocalSearchParams } from 'expo-router';
 import { useRouter } from 'expo-router';
 import { auth } from "../../src/firebaseConfig";
+import { useCartStore } from '../../src/store/cartStore'; // import at 
 
 
 const isGuest = auth.currentUser?.isAnonymous;
 export default function ProductDetails() {
-
+    const addToCart = useCartStore((state) => state.addToCart);
+    const product = useLocalSearchParams();
+    const router = useRouter();
     // if (isGuest) {
     //     return <Text>Guests cannot purchase items. Please sign in.</Text>;
     // }
-
-
-    const  product  = useLocalSearchParams();
     console.log(product);
-    const router = useRouter();
 
-    const handleAddToCart = () => {
-        console.log(`${product.name} added to cart`);
+const handleAddToCart = () => {
+    addToCart(product); // assuming product has unique `id`
         router.push('/cart');
     };
 
