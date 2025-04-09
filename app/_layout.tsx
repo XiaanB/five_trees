@@ -19,6 +19,8 @@ import "react-native-reanimated";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { auth } from "../src/firebaseConfig"; // Import Firebase auth
 import { onAuthStateChanged } from "firebase/auth";
+import CustomSplash from '../components/CustomSplash';
+
 
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -43,6 +45,16 @@ export default function Layout() {
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
+  const [appReady, setAppReady] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setAppReady(true);
+    }, 3000);
+  }, []);
+
+
+
   useEffect(() => {
     // Check authentication state
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -64,8 +76,8 @@ export default function Layout() {
     }
   }, [loaded]);
 
-  if (!loaded || isLoading) {
-    return null; // Show nothing until fonts and auth are loaded
+  if (!appReady || !loaded || isLoading) {
+    return <CustomSplash />;
   }
 
 
