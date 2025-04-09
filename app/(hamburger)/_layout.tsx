@@ -4,6 +4,9 @@ import { View, Text, Button } from "react-native";
 import { useRouter } from "expo-router";
 import { auth } from "../../src/firebaseConfig";
 import { signOut } from "firebase/auth";
+import { useNavigation } from '@react-navigation/native';
+
+
 
 // Import screens
 import AboutScreen from "../(hamburger)/aboutUs";
@@ -16,17 +19,30 @@ import PushDemoScreen from "../(hamburger)/pushDemo";
 import PushEmailScreen from "../(hamburger)/pushEmail";
 import UserProfileScreen from "../(hamburger)/userProfile";
 import AddProductScreen from "../(product)/addProduct";
+import LoginScreen from "../(auth)/login";
+
+import { logOut } from "@/services/auth";
+
 
 const Drawer = createDrawerNavigator();
+
 
 // Custom Drawer Content
 function CustomDrawerContent(props) {
   const router = useRouter();
+       const navigation = useNavigation();
 
-  const handleSignOut = async () => {
-    await signOut(auth);
-    router.replace("/(auth)/"); // Redirect to sign-in after logout
+  const handleLogout = async () => {
+    console.log("Attempting to log out...");
+    const result = await logOut();
+    if (result.success) {
+      console.log("Logged out successfully");
+      navigation.navigate('index'); // Navigate to login screen after logout
+    } else {
+      console.error("Logout failed", result.error);
+    }
   };
+
 console.log("Drawer is rendering!"); // Debugging log
   return (
     <DrawerContentScrollView {...props}>
@@ -41,7 +57,7 @@ console.log("Drawer is rendering!"); // Debugging log
       <DrawerItem label="User Profile" onPress={() => props.navigation.navigate("userProfile")} />
       <DrawerItem label="Add Product" onPress={() => props.navigation.navigate("addProduct")} />
 
-      <DrawerItem label="Sign Out" onPress={handleSignOut} />
+      <DrawerItem label="Sign Out" onPress={handleLogout} />
     </DrawerContentScrollView>
   );
 }
