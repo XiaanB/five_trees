@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, ScrollView, CheckBox } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'; // If using Expo
 import { Switch } from 'react-native';
 
@@ -99,9 +99,9 @@ export default function UserProfile() {
                     onValueChange={setSubscriptionOrders}
                 />
             </View>
-                        <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-                            <Text style={styles.saveButtonText}>Save Profile</Text>
-                        </TouchableOpacity>
+        <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+                <Text style={styles.saveButtonText}>Save Profile</Text>
+            </TouchableOpacity>
         </ScrollView>
     );
 }

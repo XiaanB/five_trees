@@ -1,38 +1,23 @@
 import { Drawer } from "expo-router/drawer";
 import { View, Text,TouchableOpacity, StyleSheet } from "react-native";
-import { globalStyles } from "./styles"; // Import styles
 import { Stack,useRouter, useSegments } from "expo-router";
-import Header  from "../components/Header"; // Import Header component
-import { MotiView } from 'moti';
-// ✅ Use this:
 import { FontAwesome } from "@expo/vector-icons";
 import { Linking } from "react-native";
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-
-import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import "react-native-reanimated";
-
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { auth } from "../src/firebaseConfig"; // Import Firebase auth
 import { onAuthStateChanged } from "firebase/auth";
 import CustomSplash from '../components/CustomSplash';
 
 
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-// SplashScreen.preventAutoHideAsync();
-
 const socialLinks = [
     { id: 'facebook', name: 'facebook', url: 'https://facebook.com/fivetreesnz', color: '#1877F2' },
     { id: 'instagram', name: 'instagram', url: 'https://instagram.com/fivetreesnz', color: '#E4405F' },
     { id: 'twitter', name: 'twitter', url: 'https://twitter.com/fivetreesnz', color: '#1DA1F2' },
 ];
-
-
 
 export default function Layout() {
   const colorScheme = useColorScheme();
@@ -63,7 +48,7 @@ export default function Layout() {
       setIsGuest(user?.isAnonymous || false);
 
       if (!user) {
-        router.replace("/auth/login"); // Redirect to login if not authenticated
+        router.replace("/(auth)/login"); // Redirect to login if not authenticated
       }
     });
 
@@ -90,8 +75,10 @@ export default function Layout() {
       <View style={{ flex: 1 }}>
         <Drawer>
           <Drawer.Screen name="(tabs)" options={{ headerShown: false }} />
-          {/* <Drawer.Screen name="(hamburger)/aboutUs" options={{ title: "About Us" }} />
-          <Drawer.Screen name="(hamburger)/contactUs" options={{ title: "Contact Us" }} /> */}
+          <Drawer.Screen name="(hamburger)/aboutUs" options={{ title: "About Us" }} />
+          <Drawer.Screen name="(hamburger)/contactUs" options={{ title: "Contact Us" }} />
+          <Drawer.Screen name="(hamburger)/userProfile" options={{ title: "User Profile" }} />
+
         </Drawer>
       </View>
 

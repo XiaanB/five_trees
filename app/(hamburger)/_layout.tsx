@@ -1,14 +1,8 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
-import { View, Text, Button } from "react-native";
 import { useRouter } from "expo-router";
-import { auth } from "../../src/firebaseConfig";
-import { signOut } from "firebase/auth";
 import { useNavigation } from '@react-navigation/native';
 
-
-
-// Import screens
 import AboutScreen from "../(hamburger)/aboutUs";
 import ContactScreen from "../(hamburger)/contactUs";
 import CameraScreen from "../(hamburger)/camera";
@@ -19,7 +13,6 @@ import PushDemoScreen from "../(hamburger)/pushDemo";
 import PushEmailScreen from "../(hamburger)/pushEmail";
 import UserProfileScreen from "../(hamburger)/userProfile";
 import AddProductScreen from "../(product)/addProduct";
-import LoginScreen from "../(auth)/login";
 
 import { logOut } from "@/services/auth";
 

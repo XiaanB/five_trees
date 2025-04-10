@@ -3,7 +3,6 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Switch } from "rea
 import { useRouter } from "expo-router";
 import { signUp } from "../../services/auth";
 import * as ImagePicker from 'expo-image-picker';
-import * as SQLite from 'expo-sqlite';
 import { Platform } from 'react-native';
 
 
@@ -13,11 +12,7 @@ const signup = () => {
   const [role, setRole] = useState("customer"); // Default role
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
-  let db = null;
 
-  if (Platform.OS !== 'web') {
-    db = SQLite.openDatabase('userDetails.db');
-  }
 
   const [form, setForm] = useState({
     email: '',
@@ -49,29 +44,6 @@ const signup = () => {
       router.replace("/(tabs)/home"); // Redirect to home page after signup
     } else {
       setErrorMessage(result.error);
-    }
-    // Store in SQLite
-    if (db) {
-      db.transaction(tx => {
-        tx.executeSql(
-          `CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT, firstName TEXT, lastName TEXT, address TEXT, phone TEXT, subscribed INTEGER, newsletter INTEGER, photo TEXT);`
-        );
-        tx.executeSql(
-          `INSERT INTO user (email, firstName, lastName, address, phone, subscribed, newsletter, photo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-          [
-            form.email,
-            form.firstName,
-            form.lastName,
-            form.address,
-            form.phone,
-            form.subscribed ? 1 : 0,
-            form.newsletter ? 1 : 0,
-            form.photo,
-          ]
-        );
-      });
-
-      alert('User details saved locally!');
     }
   };
 

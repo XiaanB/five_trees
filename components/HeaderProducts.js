@@ -118,6 +118,17 @@ const Header = () => {
               <Text>Send Email</Text>
             </TouchableOpacity>
 
+                        <TouchableOpacity
+              onPress={() => {
+                router.push('/(hamburger)/userProfile');
+                closeModal();
+              }}
+              style={{ padding: 10 }}
+            >
+              <Text>Send profile</Text>
+            </TouchableOpacity>
+
+
             
 
 
