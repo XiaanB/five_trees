@@ -5,6 +5,10 @@ import Header from '@/components/Header';
 import { useNavigation } from '@react-navigation/native';
 import { useLayoutEffect } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
+import { Video } from 'expo-av';
+import myVideo from '@/assets/videos/Banner.mp4'
+
+
 
 
 
@@ -53,11 +57,30 @@ useLayoutEffect(() => {
                 style={{ padding: 15, backgroundColor: '#fff', borderRadius: 10, shadowColor: '#000', shadowOpacity: 0.2, shadowOffset: { width: 0, height: 2 }, shadowRadius: 3, marginBottom: 20 }}
             >
                 <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>How It Works</Text>
-                <Image
-                    source={{ uri: 'https://example.com/how-it-works.jpg' }} // Replace with real image
-                    style={{ width: '100%', height: 200, borderRadius: 10 }}
-                    resizeMode="cover"
-                />
+                                <MotiView
+                                    from={{ opacity: 0, translateY: 30 }}
+                                    animate={{ opacity: 1, translateY: 0 }}
+                                    transition={{ type: 'timing', duration: 800 }}
+                                    >
+                                    <Video
+                                          source={myVideo}
+                                        rate={1.0}
+                                        volume={1.0}
+                                        isMuted={false}
+                                        resizeMode="cover"
+                                        shouldPlay
+                                        isLooping
+                                        useNativeControls
+                                        style={{
+                                        width: width - 40,
+                                        height: 200,
+                                        borderRadius: 10,
+                                        marginHorizontal: 20,
+                                        marginVertical: 20,
+                                        }}
+                                    />
+                                    </MotiView>
+                
                 <Text style={{ fontSize: 16, marginTop: 10 }}>
                     1️⃣ Fill a reusable soap dispenser with warm water.{"\n"}
                     2️⃣ Drop in one Five Trees hand wash tablet.{"\n"}

@@ -1,44 +1,55 @@
-import React from 'react';
-import { View, Text, Image, FlatList, Dimensions, TouchableOpacity, Linking } from 'react-native';
+import React, { useLayoutEffect } from 'react';
+import { View, Text, Image, FlatList, Dimensions, TouchableOpacity, Linking, ScrollView } from 'react-native';
 import { MotiView } from 'moti';
 import { FontAwesome } from '@expo/vector-icons';
 import Header from '@/components/Header';
-import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { useLayoutEffect } from 'react';
+import { Video } from 'expo-av';
+import myVideo from '@/assets/videos/Banner.mp4';
+import bannerImage from '@/assets/images/Banner.jpg'; // Adjust the path to your video
+import special1 from '@/assets/images/special1.jpg'; // Adjust the path to your video
+import special2 from '@/assets/images/special2.jpg'; // Adjust the path to your video
+import special3 from '@/assets/images/special3.jpg'; // Adjust the path to your video
 
+
+
+// Import local images correctly
+// const bannerImage = require('../../assets/images/banner.jpg');
+// const special1 = require('../../../assets/images/special1.jpg');
+// const special2 = require('../../../assets/images/special2.jpg');
+// const special3 = require('../../../assets/images/special3.jpg');
 
 const { width } = Dimensions.get('window');
 
 const specials = [
-    { id: '1', title: '50% Off Hand Wash', image: 'https://example.com/special1.jpg' },
-    { id: '2', title: 'Buy 1 Get 1 Free', image: 'https://example.com/special2.jpg' },
-    { id: '3', title: 'Limited Time Discount', image: 'https://example.com/special3.jpg' },
+    { id: '1', title: '50% Off Hand Wash', image: special1 },
+    { id: '2', title: 'Buy 1 Get 1 Free', image: special2 },
+    { id: '3', title: 'Limited Time Discount', image: special3 },
 ];
 
-
 const HomePage = () => {
+    const navigation = useNavigation();
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.openDrawer()} style={{ marginLeft: 15 }}>
+                    <FontAwesome name="bars" size={24} color="black" />
+                </TouchableOpacity>
+            ),
+            headerTitle: 'Home',
+            headerShown: true,
+        });
+    }, [navigation]);
+
     const openURL = (url) => {
         Linking.openURL(url).catch(err => console.error("Couldn't open URL", err));
     };
-    const navigation = useNavigation();
-
-useLayoutEffect(() => {
-    navigation.setOptions({
-        headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.openDrawer()} style={{ marginLeft: 15 }}>
-                <FontAwesome name="bars" size={24} color="black" />
-            </TouchableOpacity>
-        ),
-        headerTitle: 'Home',
-        headerShown: true,
-    });
-}, [navigation]);
-
 
     return (
-        <View style={{ flex: 1, backgroundColor: '#f9f9f9' }}>
-                  <Header/>
+         
+        <ScrollView style={{ flex: 1, backgroundColor: '#f9f9f9' }} contentContainerStyle={{ paddingBottom: 40 }}>
+            <Header />
 
             {/* 🏠 Animated Banner Section */}
             <MotiView
@@ -54,13 +65,38 @@ useLayoutEffect(() => {
                 }}
             >
                 <Image
-                    source={{ uri: 'https://example.com/banner.jpg' }} // Replace with actual image
+                    source={bannerImage}
                     style={{ width: '100%', height: '100%', position: 'absolute' }}
                     resizeMode="cover"
                 />
                 <Text style={{ color: '#fff', fontSize: 24, fontWeight: 'bold', textAlign: 'center' }}>
-                    Welcome to Five Treesaaaaaaaa!
+                    Welcome to Five Trees
                 </Text>
+            </MotiView>
+
+            {/* 📹 Video Section */}
+            <MotiView
+                from={{ opacity: 0, translateY: 30 }}
+                animate={{ opacity: 1, translateY: 0 }}
+                transition={{ type: 'timing', duration: 800 }}
+            >
+                <Video
+                    source={myVideo}
+                    rate={1.0}
+                    volume={1.0}
+                    isMuted={false}
+                    resizeMode="cover"
+                    shouldPlay
+                    isLooping
+                    useNativeControls
+                    style={{
+                        width: width - 40,
+                        height: 200,
+                        borderRadius: 10,
+                        marginHorizontal: 20,
+                        marginVertical: 20,
+                    }}
+                />
             </MotiView>
 
             {/* 🔥 Specials Section */}
@@ -87,7 +123,7 @@ useLayoutEffect(() => {
                         }}
                     >
                         <Image
-                            source={{ uri: item.image }}
+                            source={item.image}
                             style={{ width: width * 0.6, height: 150, borderRadius: 10 }}
                             resizeMode="cover"
                         />
@@ -95,8 +131,7 @@ useLayoutEffect(() => {
                     </MotiView>
                 )}
             />
-
-        </View>
+        </ScrollView>
     );
 };
 

@@ -75,9 +75,11 @@ export default function Layout() {
       <View style={{ flex: 1 }}>
         <Drawer>
           <Drawer.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Drawer.Screen name="(hamburger)/aboutUs" options={{ title: "About Us" }} />
+          {/* <Drawer.Screen name="(hamburger)/aboutUs" options={{ title: "About Us" }} />
           <Drawer.Screen name="(hamburger)/contactUs" options={{ title: "Contact Us" }} />
           <Drawer.Screen name="(hamburger)/userProfile" options={{ title: "User Profile" }} />
+          <Drawer.Screen name="(hamburger)/homedb" options={{ title: "home DB" }} /> */}
+
 
         </Drawer>
       </View>

@@ -3,10 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "expo-router";
 import { TouchableOpacity } from "react-native";
 import { DrawerActions } from '@react-navigation/native'; // Import DrawerActions
-import { Stack } from "expo-router";
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
 export default function TabsLayout() {

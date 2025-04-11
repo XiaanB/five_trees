@@ -33,6 +33,11 @@ const Header = () => {
             <Ionicons name="person-circle-outline" size={30} color="black" />
           </TouchableOpacity>
 
+          <TouchableOpacity onPress={() => router.push('/(hamburger)/homedb')}>
+            <Ionicons name="person-circle-outline" size={30} color="black" />
+          </TouchableOpacity>
+
+
           {/* Cart Icon with Badge */}
           <TouchableOpacity onPress={() => router.push('/(hamburger)/cart')} style={{ marginLeft: 10 }}>
             <View style={styles.cartIconContainer}>

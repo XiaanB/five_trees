@@ -1,138 +1,146 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Switch } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+} from "react-native";
 import { useRouter } from "expo-router";
-import { signUp } from "../../services/auth";
-import * as ImagePicker from 'expo-image-picker';
-import { Platform } from 'react-native';
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../src/firebaseConfig";
 
-
-const signup = () => {
+const SignUpScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("customer"); // Default role
   const [errorMessage, setErrorMessage] = useState("");
+
   const router = useRouter();
 
-
-  const [form, setForm] = useState({
-    email: '',
-    password: '',
-    firstName: '',
-    lastName: '',
-    address: '',
-    phone: '',
-    subscribed: false,
-    newsletter: false,
-    photo: null,
-  });
-
-  const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setForm({ ...form, photo: result.assets[0].uri });
-    }
-  };
-
   const handleSignup = async () => {
-    const result = await signUp(email, password);
-    if (result.success) {
-      router.replace("/(tabs)/home"); // Redirect to home page after signup
-    } else {
-      setErrorMessage(result.error);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      Alert.alert("Success", "Account created!");
+      router.replace("/(tabs)/home");
+    } catch (error) {
+      console.error("Signup error:", error.message);
+      setErrorMessage(error.message);
     }
   };
 
+  return (
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+    >
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+          <Text style={styles.backButtonText}>← Back</Text>
+        </TouchableOpacity>
 
-return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Sign Up</Text>
-      {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
-      <TextInput placeholder="Email" value={email} onChangeText={setEmail} style={styles.input} />
-      <TextInput placeholder="Password" value={password} onChangeText={setPassword} secureTextEntry style={styles.input} />
+        <View style={styles.card}>
+          <Text style={styles.title}>Create Your Account</Text>
+          {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
 
-      <Text style={styles.label}>Select Role:</Text>
-      <Picker selectedValue={role} onValueChange={(itemValue) => setRole(itemValue)} style={styles.picker}>
-        <Picker.Item label="Customer" value="customer" />
-        <Picker.Item label="Admin" value="admin" />
-      </Picker>
-      <TextInput placeholder="Email" onChangeText={email => setForm({ ...form, email })} />
-      <TextInput placeholder="Password" secureTextEntry onChangeText={password => setForm({ ...form, password })} />
-      <TextInput placeholder="First Name" onChangeText={firstName => setForm({ ...form, firstName })} />
-      <TextInput placeholder="Last Name" onChangeText={lastName => setForm({ ...form, lastName })} />
-      <TextInput placeholder="Address" onChangeText={address => setForm({ ...form, address })} />
-      <TextInput placeholder="Phone Number" onChangeText={phone => setForm({ ...form, phone })} keyboardType="phone-pad" />
-      
-      <TouchableOpacity onPress={pickImage}>
-        <Text>Select Profile Photo</Text>
-      </TouchableOpacity>
-      {form.photo && <Image source={{ uri: form.photo }} style={{ width: 100, height: 100 }} />}
+          <TextInput
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            style={styles.input}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            placeholderTextColor="#999"
+          />
+          <TextInput
+            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            style={styles.input}
+            placeholderTextColor="#999"
+          />
 
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-        <Text>Subscribe</Text>
-        <Switch value={form.subscribed} onValueChange={subscribed => setForm({ ...form, subscribed })} />
-      </View>
-
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Text>Newsletter</Text>
-        <Switch value={form.newsletter} onValueChange={newsletter => setForm({ ...form, newsletter })} />
-      </View>
-
-
-      <TouchableOpacity style={styles.button} onPress={handleSignup}>
-        <Text style={styles.buttonText}>Sign Up</Text>
-      </TouchableOpacity>
-    </View>
+          <TouchableOpacity style={styles.button} onPress={handleSignup}>
+            <Text style={styles.buttonText}>Sign Up</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
+
+export default SignUpScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#f5f7fa",
+  },
+  scrollContainer: {
+    flexGrow: 1,
     justifyContent: "center",
-    alignItems: "center",
     padding: 20,
+  },
+  backButton: {
+    position: "absolute",
+    top: 50,
+    left: 20,
+    zIndex: 10,
+  },
+  backButtonText: {
+    fontSize: 18,
+    color: "#007bff",
+  },
+  card: {
     backgroundColor: "#fff",
+    borderRadius: 16,
+    padding: 24,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 8,
+    elevation: 5,
+    marginTop: 80,
   },
   title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
+    fontSize: 28,
+    fontWeight: "700",
+    color: "#333",
+    marginBottom: 24,
+    textAlign: "center",
   },
   input: {
-    width: "100%",
     height: 50,
+    borderColor: "#ddd",
     borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginBottom: 10,
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    marginBottom: 16,
+    fontSize: 16,
+    backgroundColor: "#fafafa",
+    color: "#333",
   },
   button: {
-    width: "100%",
-    height: 50,
     backgroundColor: "#007bff",
-    justifyContent: "center",
+    paddingVertical: 14,
+    borderRadius: 10,
     alignItems: "center",
-    borderRadius: 5,
+    marginTop: 8,
   },
   buttonText: {
     color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  link: {
-    marginTop: 15,
-    color: "#007bff",
+    fontWeight: "600",
+    fontSize: 16,
   },
   error: {
     color: "red",
     marginBottom: 10,
+    textAlign: "center",
   },
 });
-
-export default signup;

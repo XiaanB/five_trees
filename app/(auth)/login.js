@@ -12,9 +12,12 @@ import { auth } from "../../src/firebaseConfig";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import { makeRedirectUri } from "expo-auth-session";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { Alert } from "react-native";
+import * as AuthSession from 'expo-auth-session';
 
-WebBrowser.maybeCompleteAuthSession();
-const redirectUri = makeRedirectUri({ useProxy: true });
+
+
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -23,18 +26,29 @@ const LoginScreen = () => {
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const router = useRouter();
+  
+
+
+  // WebBrowser.maybeCompleteAuthSession();
+
+// In your sign-in function, dynamically create the correct redirect URI
+  const redirectUri = makeRedirectUri({ useProxy: true });
+  console.log("Redirect URI:", redirectUri); // Check the output in the console
+
 
   const [request, response, promptAsync] = Google.useAuthRequest({
-    expoClientId: "582444083351-18bib0ib1suegl75vkgc7p95sl1ac8e4.apps.googleusercontent.com",
-    iosClientId: "582444083351-o690ln6gvvh14sh9m8e5oqe759r2hi1g.apps.googleusercontent.com",
-    androidClientId: "582444083351-ccgacqi7168d8efp1ri6hmtl5q1mp9kg.apps.googleusercontent.com",
-    webClientId: "582444083351-18bib0ib1suegl75vkgc7p95sl1ac8e4.apps.googleusercontent.com",
-    redirectUri, 
-  });
+      expoClientId: "582444083351-18bib0ib1suegl75vkgc7p95sl1ac8e4.apps.googleusercontent.com",  // Use Web Client ID for Expo
+      iosClientId: "582444083351-o690...",   // iOS Client ID
+      androidClientId: "582444083351-ccga...", // Android Client ID
+      webClientId: "582444083351-18bib0ib1suegl75vkgc7p95sl1ac8e4.apps.googleusercontent.com",   // Use the same Web Client ID for Web
+      redirectUri,
+    });
+
 
 
     // Handle Google Sign-In response
   useEffect(() => {
+
     if (response?.type === "success") {
       const { id_token } = response.params; // Get the id_token from Google
       const credential = GoogleAuthProvider.credential(id_token); // Create Firebase credential
@@ -46,17 +60,18 @@ const LoginScreen = () => {
         })
         .catch((error) => {
           console.error("Google Sign-In Error:", error);
+
           Alert.alert("Error", "Google Sign-In failed!");
         });
     }
   }, [response]);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user || null);
-    });
-    return () => unsubscribe();
-  }, []);
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChanged(auth, (user) => {
+  //     setUser(user || null);
+  //   });
+  //   return () => unsubscribe();
+  // }, []);
 
   useEffect(() => {
     if (response?.type === "success") {
@@ -96,11 +111,32 @@ const LoginScreen = () => {
 
   const handleGoogleSignIn = async () => {
     promptAsync({ useProxy: true });
+    console.log("Redirect URI:", AuthSession.makeRedirectUri({ useProxy: true }));
+
   };
   
+  const handlePasswordReset = async () => {
+  if (!email) {
+    Alert.alert("Please enter your email address first.");
+    return;
+  }
+
+  try {
+    await sendPasswordResetEmail(auth, email);
+    Alert.alert("Password Reset", "Check your email to reset your password.");
+  } catch (error) {
+    console.error("Reset error:", error.message);
+    Alert.alert("Error", error.message);
+    }
+  };
+
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+      <Text style={styles.backArrow}>← Back</Text>
+    </TouchableOpacity>
+
       <Text style={styles.title}>Welcome Back</Text>
       <Text style={styles.subtitle}>Log in to your account</Text>
 
@@ -123,16 +159,22 @@ const LoginScreen = () => {
       />
 
           <TouchableOpacity
-  style={[
-    styles.primaryButton,
-    isAdmin && { backgroundColor: "#28a745" },
-  ]}
-  onPress={handleLogin}
->
+            style={[
+              styles.primaryButton,
+              isAdmin && { backgroundColor: "#28a745" },
+            ]}
+            onPress={handleLogin}
+          >
         <Text style={styles.primaryButtonText}>
             {isAdmin ? "Login as Admin" : "Login"}
         </Text>
-        </TouchableOpacity>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={handlePasswordReset} style={{ marginTop: 10 }}>
+        <Text style={{ color: "#007bff", textAlign: "center" }}>
+          Forgot Password?
+        </Text>
+      </TouchableOpacity>
+
 
         <TouchableOpacity
         style={styles.switchButton}
@@ -146,6 +188,11 @@ const LoginScreen = () => {
       <TouchableOpacity style={styles.googleButton} onPress={handleGoogleSignIn}>
         <Text style={styles.googleButtonText}>Sign in with Google</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity style={[styles.button, styles.googleButton]} onPress={() => promptAsync()}>
+        <Text style={styles.buttonText}>Sign in with Google</Text>
+      </TouchableOpacity>
+
 
       <TouchableOpacity style={styles.guestButton} onPress={handleGuestLogin}>
         <Text style={styles.guestButtonText}>Continue as Guest</Text>
@@ -180,84 +227,113 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
     justifyContent: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#f9f9f9",
+  },
+  backButton: {
+    position: "absolute",
+    top: 50,
+    left: 20,
+    zIndex: 1,
+    padding: 8,
+  },
+  backArrow: {
+    fontSize: 18,
+    color: "#007AFF",
   },
   title: {
-    fontSize: 28,
-    fontWeight: "700",
+    fontSize: 32,
+    fontWeight: "bold",
     textAlign: "center",
-    marginBottom: 4,
+    marginBottom: 6,
+    color: "#333",
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 18,
     textAlign: "center",
-    marginBottom: 20,
-    color: "#555",
+    marginBottom: 24,
+    color: "#666",
   },
   error: {
     color: "red",
     textAlign: "center",
-    marginBottom: 10,
+    marginBottom: 12,
+    fontWeight: "500",
   },
   input: {
-    backgroundColor: "#f2f2f2",
-    padding: 12,
-    borderRadius: 8,
-    marginBottom: 12,
+    backgroundColor: "#fff",
+    padding: 14,
+    borderRadius: 10,
+    marginBottom: 14,
+    fontSize: 16,
+    borderColor: "#ddd",
+    borderWidth: 1,
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
   },
   primaryButton: {
     backgroundColor: "#007AFF",
-    padding: 12,
-    borderRadius: 8,
+    paddingVertical: 14,
+    borderRadius: 10,
     alignItems: "center",
     marginTop: 8,
   },
   primaryButtonText: {
     color: "#fff",
-    fontSize: 16,
-    fontWeight: "500",
+    fontSize: 17,
+    fontWeight: "600",
   },
   googleButton: {
     backgroundColor: "#DB4437",
-    padding: 12,
-    borderRadius: 8,
+    paddingVertical: 14,
+    borderRadius: 10,
     alignItems: "center",
-    marginTop: 10,
+    marginTop: 12,
   },
   googleButtonText: {
     color: "#fff",
     fontSize: 16,
-    fontWeight: "500",
+    fontWeight: "600",
   },
   guestButton: {
-    backgroundColor: "#666",
-    padding: 12,
-    borderRadius: 8,
+    backgroundColor: "#555",
+    paddingVertical: 14,
+    borderRadius: 10,
     alignItems: "center",
-    marginTop: 10,
+    marginTop: 12,
   },
   guestButtonText: {
     color: "#fff",
     fontSize: 16,
-    fontWeight: "500",
+    fontWeight: "600",
   },
+    button: {
+    backgroundColor: "#007bff",
+    paddingVertical: 14,
+    borderRadius: 10,
+    alignItems: "center",
+    marginTop: 8,
+  },
+
   link: {
-    marginTop: 20,
+    marginTop: 24,
     textAlign: "center",
     color: "#007AFF",
+    fontSize: 15,
     textDecorationLine: "underline",
-    },
+    fontWeight: "500",
+  },
   switchButton: {
-  marginTop: 12,
-  alignItems: "center",
-},
-
-switchButtonText: {
-  color: "#007AFF",
-  fontSize: 14,
-  textDecorationLine: "underline",
-},
-
+    marginTop: 16,
+    alignItems: "center",
+  },
+  switchButtonText: {
+    color: "#007AFF",
+    fontSize: 15,
+    textDecorationLine: "underline",
+  },
 });
+
 
 export default LoginScreen;

@@ -1,9 +1,21 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, ScrollView, CheckBox } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, ScrollView, Button } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'; // If using Expo
 import { Switch } from 'react-native';
+import * as SQLite from 'expo-sqlite';
+import { navigate } from 'expo-router/build/global-state/routing';
+import { DatabaseConnection } from '../../Database/Database'; // Adjust the import based on your project structure
+import AddUser from '../(hamburger)/AddUser';
+import ViewUser from '../(hamburger)/scr/ViewUser';
+import DeleteUser from '../(hamburger)/scr/DeleteUser';
+import UpdateUser from '../(hamburger)/scr/UpdateUser';
+import { useRouter } from 'expo-router';
 
+
+// const db = DatabaseConnection.getConnection(); // Initialize the database connection
 export default function UserProfile() {
+    const router = useRouter();
+
     const [photo, setPhoto] = useState(null);
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
@@ -12,6 +24,7 @@ export default function UserProfile() {
     const [newsletter, setNewsletter] = useState(false);
     const [promotions, setPromotions] = useState(false);
     const [subscriptionOrders, setSubscriptionOrders] = useState(false);
+
 
     // Function to pick image from gallery
     const pickImage = async () => {
@@ -22,19 +35,42 @@ export default function UserProfile() {
             quality: 1,
         });
 
+
         if (!result.cancelled) {
             setPhoto(result.uri);
         }
     };
+
+  
 
     const handleSave = () => {
         // Handle save logic (e.g., API call to save the profile data)
         console.log('Profile Saved', { name, address, email, phone, newsletter, promotions, subscriptionOrders, photo });
     };
 
-    return (
-        <ScrollView contentContainerStyle={styles.container}>
+  // useEffect(() => {
+  //   // Create the database and table if they don't exist
+  //   db.transaction(function(tx){
+  //     tx.executeSql(
+  //       'CREATE TABLE IF NOT EXISTS table_user(user_id INTEGER PRIMARY  KEY AUTOINCREMENT, USER_NAME varchar(20), USER_ADDRESS varchar(50), USER_EMAIL varchar(50), USER_PHONE varchar(255))',  
+  //       [],
+  //       (tx, results) => {
+  //         console.log('Table created successfully');
+  //       }
+  //     )
+  //   })
+  // }, []);
+
+return (
+      <ScrollView contentContainerStyle={styles.container}>
+        
+        <Button title="Add user" onPress={() => router.push('/AddUser')} />
+        <Button title="View user" onPress={() =>navigate.navigate("View")} />
+        <Button title="Delete user" onPress={() =>navigate.navigate("Delete")} />
+        <Button title="Update user" onPress={() =>navigate.navigate("Update")} />
+
             <Text style={styles.title}>User Profile</Text>
+
 
             <TouchableOpacity onPress={pickImage}>
                 <View style={styles.imageContainer}>
@@ -46,6 +82,7 @@ export default function UserProfile() {
                 </View>
             </TouchableOpacity>
 
+
             <TextInput
                 style={styles.input}
                 placeholder="Full Name"
@@ -53,12 +90,14 @@ export default function UserProfile() {
                 onChangeText={setName}
             />
 
+
             <TextInput
                 style={styles.input}
                 placeholder="Address"
                 value={address}
                 onChangeText={setAddress}
             />
+
 
             <TextInput
                 style={styles.input}
@@ -68,6 +107,7 @@ export default function UserProfile() {
                 keyboardType="email-address"
             />
 
+
             <TextInput
                 style={styles.input}
                 placeholder="Phone Number"
@@ -75,6 +115,7 @@ export default function UserProfile() {
                 onChangeText={setPhone}
                 keyboardType="phone-pad"
             />
+
 
             <View style={styles.switchContainer}>
                 <Text style={styles.switchLabel}>Opt-in for Newsletter</Text>
@@ -84,6 +125,7 @@ export default function UserProfile() {
                 />
             </View>
 
+
             <View style={styles.switchContainer}>
                 <Text style={styles.switchLabel}>Opt-in for Promotional Materials</Text>
                 <Switch
@@ -91,6 +133,7 @@ export default function UserProfile() {
                     onValueChange={setPromotions}
                 />
             </View>
+
 
             <View style={styles.switchContainer}>
                 <Text style={styles.switchLabel}>Opt-in for Subscription Orders</Text>
@@ -105,6 +148,7 @@ export default function UserProfile() {
         </ScrollView>
     );
 }
+
 
 const styles = StyleSheet.create({
     container: {
@@ -164,5 +208,20 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 18,
         fontWeight: 'bold',
-    },
+  },
+    switchContainer: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 15,
+    backgroundColor: '#f9f9f9',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+},
+
+
 });
+
+

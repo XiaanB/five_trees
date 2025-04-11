@@ -13,6 +13,8 @@ import PushDemoScreen from "../(hamburger)/pushDemo";
 import PushEmailScreen from "../(hamburger)/pushEmail";
 import UserProfileScreen from "../(hamburger)/userProfile";
 import AddProductScreen from "../(product)/addProduct";
+import AddUser from "../(hamburger)/AddUser";
+import TestScreen from "../(hamburger)/homedb";
 
 import { logOut } from "@/services/auth";
 
@@ -49,8 +51,10 @@ console.log("Drawer is rendering!"); // Debugging log
       <DrawerItem label="Push Email" onPress={() => props.navigation.navigate("pushEmail")} />
       <DrawerItem label="User Profile" onPress={() => props.navigation.navigate("userProfile")} />
       <DrawerItem label="Add Product" onPress={() => props.navigation.navigate("addProduct")} />
-
+      <DrawerItem label="Add User" onPress={() => props.navigation.navigate("addUser")} />
       <DrawerItem label="Sign Out" onPress={handleLogout} />
+      <DrawerItem label="HomeDB" onPress={() => props.navigation.navigate("homedb")} />
+      {/* Add more items as needed */}
     </DrawerContentScrollView>
   );
 }
@@ -68,6 +72,9 @@ export default function DrawerLayout() {
           <Drawer.Screen name="pushEmail" component={PushEmailScreen} />
           <Drawer.Screen name="userProfile" component={UserProfileScreen} />
           <Drawer.Screen name="addProduct" component={AddProductScreen} />
+          <Drawer.Screen name="addUser" component={AddUser} />
+          <Drawer.Screen name="homedb" component={TestScreen} />
+      {/* Add more screens as needed */}
           
     </Drawer.Navigator>
   );
